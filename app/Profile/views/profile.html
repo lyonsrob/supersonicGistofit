@@ -1,0 +1,110 @@
+<style>
+.profile-card {
+  width: 100%;
+  text-align: center;
+  color: white;
+  padding: 30px 0;
+  line-height: 1.4;
+  background-color: #33393c;
+  text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px;
+}
+
+.profile-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  background-color: black;
+  border 1px solid white;
+  box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
+  -webkit-box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
+}
+
+.profile-name {
+  margin: 20px 0 0 0;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.profile-id {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.profile-desc {
+  font-size: 15px;
+  opacity: 0.6;
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+}
+</style >
+
+<div ng-controller="ProfileCtrl" id="Profile">
+<div class="content">
+<div class="profile-card">
+        <img ng-src="{{ profilePicture }}" class="profile-image">
+        <div class="profile-name">{{ firstName }} {{ lastName }}</div>
+</div>
+<div class="button-bar">
+  <a class="button">        
+   	<em class="tab-number">
+		<ng-pluralize count="gistCount" 
+                when="{'0': 'No Gists',
+                       '1': '{{gistCount}} Gist',
+                       'other': '{{gistCount}} Gists'}">
+  		</ng-pluralize>
+	</em>
+  </a>
+  <a class="button">
+    <em class="tab-number">
+		<ng-pluralize count="likeCount" 
+                when="{'0': 'No Likes',
+                       '1': '{{likeCount}} Like',
+                       'other': '{{likeCount}} Likes'}">
+  		</ng-pluralize>
+    </em>
+  </a>
+  <a class="button">
+    <em class="tab-number">
+		<ng-pluralize count="commentCount" 
+                when="{'0': 'No Comments',
+                       '1': '{{commentCount}} Comment',
+                       'other': '{{commentCount}} Comments'}">
+  		</ng-pluralize>
+    </em>
+   </a>
+</div>
+    <div ng-show="loginStatus">
+        <div class="topcoat-button full center block" ng-click="facebookLogout()">Logout from Facebook</div>
+    </div>
+    
+    <button class="button icon-top ion-arrow-up-b" ng-click="logout()">Logout</button>
+    <button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
+
+<ul class="list">
+
+  <li class="item item-toggle">
+     Auto Post to Facebook
+     <label class="toggle toggle-assertive">
+       <input type="checkbox">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+  </li>
+    <li class="item item-toggle">
+     Auto Post to Twitter
+     <label class="toggle toggle-assertive">
+       <input type="checkbox">
+       <div class="track">
+         <div class="handle"></div>
+       </div>
+     </label>
+  </li>
+</ul>
+
+</div>
+</div>
+</div>

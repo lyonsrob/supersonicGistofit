@@ -1,0 +1,78 @@
+<style>
+.profile-card {
+  width: 100%;
+  text-align: center;
+  color: white;
+  padding: 30px 0;
+  line-height: 1.4;
+  background-color: #33393c;
+  text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px;
+}
+
+.profile-image {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  background-color: black;
+  border 1px solid white;
+  box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
+  -webkit-box-shadow:rgba(0, 0, 0, 0.2) 0px 2px 0px 0px;
+}
+
+.profile-name {
+  margin: 20px 0 0 0;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.profile-id {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.profile-desc {
+  font-size: 15px;
+  opacity: 0.6;
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+}
+</style >
+
+<div ng-controller="ProfileCtrl" id="Profile">
+<div class="profile-card">
+        <img src="https://fbcdn-profile-a.akamaihd.net/hprofile-ak-xpa1/v/t1.0-1/p160x160/10423662_10105174390601574_8899960929476582913_n.jpg?oh=a340ef6a8d02a3ec78052bdd1514d2a1&oe=5508FE3A&__gda__=1426716331_a4daf56f71a277c8c22f9d2cc8eb2211" class="profile-image">
+        <div class="profile-name">Dave Graham</div>
+        <div class="profile-id">@davegraham</div>
+        <div class="profile-desc">Freelance designer, software engineer and cyclist</div>
+</div>
+    <div ng-hide="addonsUndefined">
+      <h1>Facebook Add-on</h1>
+
+      <h2>Add-on initialized: {{ ready }}</h2>
+
+      <h2>Facebook login status: {{ loginStatus }}</h2>
+
+      <h2>Your first name: {{ firstName }}</h2>
+
+      <div ng-show="!loginStatus">
+        <div class="topcoat-button full center block" ng-click="facebookLogin()">Login to Facebook</div>
+      </div>
+
+      <div ng-show="loginStatus">
+        <div class="topcoat-button full center block" ng-click="facebookLogout()">Logout from Facebook</div>
+      </div>
+    </div>
+
+      <div class="topcoat-button full center block" ng-click="facebookGraphQuery()">
+        Query user's first name
+      </div>
+
+    <div ng-show="addonsUndefined">
+      <h1 class="error">Error!</h1>
+      <p>Uh oh! It seems like <code>steroids.addons.js</code> is not loaded. Ensure you have added it to your project according to the instructions at <a href="http://addons.appgyver.com">http://addons.appgyver.com</a>.</p>
+    </div>
+</div>
+</div>

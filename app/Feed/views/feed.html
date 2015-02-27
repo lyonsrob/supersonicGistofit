@@ -1,0 +1,31 @@
+<div ng-controller="FeedCtrl" id="Feed">
+ <div class="content">
+  <ul pull-to-refresh="onReload()">
+    <li ng-model="feeds" ng-repeat="feed in feeds" class="repeat-animation">
+        <div class="list card">
+
+          <div class="item item-avatar">
+            <img ng-src="{{ feed.extract.favicon_url }}">
+            <h2>{{feed.extract.title}}</h2>
+            <p>via {{ feed.extract.provider_name}}</p>
+          </div>
+
+          <div class="item item-body">
+            <h2>
+              {{feed.extract.title}}
+            </h2>
+            <div ng-bind-html="feed.extract.video"></div>
+            <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" ng-click="openURL(feed.link)" />
+            <p>
+              {{feed.extract.description}}
+            </p>
+          </div>
+           
+          <div class="item item-input-inset">
+            <button class="button button-small" ng-click="showGistPrompt(feed)"  >#GistOfIt</button>
+          </div>
+        </div>
+    </li>
+  </ul>
+</div>
+</div>

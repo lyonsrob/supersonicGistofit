@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf8">
+  <title><%= yield.viewName %></title>
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,400' rel='stylesheet' type='text/css'>
+
+  <!--link rel="stylesheet" href="/custom.css" />
+  <link rel="stylesheet" href="/vendor/ionic/css/ionic.css" />
+  <script src="/models/models.js"></script>
+  <link rel="stylesheet" href="/stylesheets/application.css" / -->
+
+  <link rel="stylesheet" href="/components/supersonic/css/supersonic.css" />
+  <link rel="stylesheet" href="/app/common/stylesheets/application.css" />
+  <link rel="import" href="/components/supersonic/components/import.html">
+
+  <script src="http://localhost/cordova.js"></script>
+  <script src="/components/steroids-js/steroids.js"></script>
+
+  <script src="/components/angular/angular.js"></script>
+  <script src="/components/angular-touch/angular-touch.js"></script>
+  <script src="/components/ngstorage/ngStorage.js"></script>
+  
+  <script src="/components/supersonic/supersonic.js"></script>
+  <script src="/components/steroids-addons/index.js"></script>
+  <script src="/components/lodash/dist/lodash.js"></script>
+  <script src="/components/webcomponentsjs/webcomponents.js"></script>
+  <script src="/components/jquery/jquery.js"></script>
+
+  <% _.each(yield.modules, function(module) { %>
+  <script src="/app/<%= module %>.js"></script>
+  <% }); %>
+</head>
+<body ng-app="gistOfItApp">
+
+<div id="global-spinner-div">
+  <div class="global-blackout"></div>
+  <div class="global-modal-container">
+    <div class="global-spinner-container">
+      <i class="icon ion-ios7-reloading"></i>
+    </div>
+  </div>
+</div>
+
+  <%= yield.view %>
+
+<script>
+  window.globalSpinner = {
+    show: function() {
+      document.ontouchmove = function(e){ 
+        e.preventDefault(); 
+      }
+      document.getElementById("global-spinner-div").style.display = 'block';
+    },
+    hide: function() {
+      document.getElementById("global-spinner-div").style.display = 'none';
+      document.ontouchmove = function(e){ return true; }
+    }
+  };
+</script>
+
+</body>
+</html>

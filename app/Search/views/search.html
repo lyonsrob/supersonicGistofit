@@ -1,0 +1,29 @@
+<div ng-controller="SearchCtrl" id="Search">
+    <div class="content">
+    <div class="list">
+      <label class="item item-input">
+        <input type="text" placeholder="Search" ng-model="search">
+      </label>
+
+      <ul>
+        <li ng-model="results" ng-repeat="result in results">
+            <div class="list card">
+
+              <div class="item item-avatar">
+                <img ng-src="{{ result.extract.favicon_url }}">
+                <h2>{{result.extract.provider_name}}</h2>
+              </div>
+
+              <div class="item item-body">
+                    <img class="full-image" ng-src="{{ result.extract.images[0].url }}" ng-click="openURL(gist.url.key.raw.name)" />
+                <h2>
+                  {{result.extract.title}}
+                </h2>
+              </div>
+                  
+            </div>
+        </li>
+      </ul>
+    </div>
+    </div>
+</div>

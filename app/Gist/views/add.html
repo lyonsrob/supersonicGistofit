@@ -1,0 +1,29 @@
+<body class="content" style="background:#000;" ng-controller="GistCtrl" id="Gist">
+    <div class="bar bar-header">
+        <button class="button button-icon icon ion-ios7-close-empty" onclick="steroids.modal.hide()"></button>
+        <div class="h1 title">#GistOfIt</div>
+        <button class="button button-clear button-positive" ng-click="addGist(gist);" >Submit</button>
+    </div>
+
+    <div class="content has-header ionic-pseudo">
+	<div class="item item-avatar">
+		<img ng-src="{{ extract.images[0].url }}">
+		<h2>{{extract.title}}</h2>
+		<p>via {{ extract.provider_name}}</p>
+	</div>
+	
+	<div class="button-bar">
+		<button class="button">
+			<i class="icon ion-social-facebook"></i> Share on Facebook
+		</button>
+		<button class="button">
+			<i class="icon ion-social-twitter"></i> Share on Twitter
+		</button>
+	</div>
+	<div>
+		<label class="item item-input" >
+		    <textarea autofocus placeholder="What was the gist?" rows="100%" cols="100%" ng-model="gist" name="gist" id="gist"></textarea>
+		</label>
+	</div>
+    </div>
+</body>

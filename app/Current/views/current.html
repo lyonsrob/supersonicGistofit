@@ -1,0 +1,31 @@
+<div ng-controller="CurrentCtrl" id="Current">
+ <div class="content" when-scrolled="myPagingFunction()">
+  <ul pull-to-refresh="onReload()">
+    <li ng-model="gists" ng-repeat="gist in gists" class="repeat-animation">
+        <div class="list card">
+
+          <div class="item item-avatar">
+            <img ng-src="{{ gist.extract.favicon_url }}">
+            <h2>{{gist.extract.provider_name}}</h2>
+            <p>via Robert Lyons</p>
+          </div>
+
+          <div class="item item-body">
+            <p>
+              {{gist.content}} #gistofit
+            </p>
+		<button class="button icon-top ion-arrow-up-b" ng-click="likeGist(gist.id)" ng-disabled="gist.userLiked">{{gist.likes.total}}</button>
+		<button class="button icon-left ion-chatbubble" ng-click="showComments(gist)">Comment</button>
+		<div class="padding item">
+                	<img class="full-image" ng-src="{{ gist.extract.images[0].url }}" ng-click="openURL(gist.url.key.raw.name)" />
+		</div>
+            <h2>
+              {{gist.extract.title}}
+            </h2>
+          </div>
+              
+        </div>
+    </li>
+  </ul>
+</div>
+</div>

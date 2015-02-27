@@ -1,0 +1,82 @@
+<style>
+  .comment_component .user_name small {
+    color: #999999;
+    font-size: 14px;
+  }
+  .comment_component .item p {
+    white-space: normal;
+  }
+  .comment_component .item p.message {
+    color: #333333;
+  }
+  .comment_component .item-input-inset {
+    padding-left: 70px;
+    min-height: 70px;
+  }
+  .comment_component .item-input-inset img:first-child {
+    position: absolute;
+    top: 14px;
+    left: 15px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 4px;
+  }
+  .comment_component .item-input-wrapper {
+    padding: 6px;
+  }
+
+  .comment_component .gray, .comment_component .gray * {
+    color: #999 !important;
+  }
+  .comment_component .gray img {
+    opacity: 0.5;
+  }
+  .comment_component .message.error {
+    color: red !important;
+  }
+  .comment_component .hide {
+    display: none;
+  }
+</style>
+<script src="/components/moment/moment.js"></script>
+<div ng-controller="CommentsCtrl" class="padding comment_component">
+
+    <form ng-submit="add()">
+      <div class="item item-input-inset">
+        <img ng-src="{{currentUser.user_image_url}}">
+        <label class="item-input-wrapper">
+          <input type="text" placeholder="Add Comment" ng-model="content">
+        </label>
+        <button class="button button-clear">
+          Send
+        </button>
+      </div>
+    </form>
+
+    <div
+      class="item item-avatar item-icon-right"
+      ng-class="{hide: comment.removed == true, gray: comment.notYetSaved == true}"
+      ng-repeat="comment in comments | orderBy:'-created_at'">
+      <img ng-src="{{comment.user_image_url}}">
+      <h2 class="user_name">
+        <strong>{{comment.user}}</strong><br />
+        <small>{{comment.created}}</small>
+      </h2>
+
+      <p class="message error" ng-if="comment.error">
+        {{comment.error}}
+      </p>
+
+      <p class="message">
+        {{comment.content}}
+      </p>
+
+      <i class="icon ion-ios7-close-empty" ng-if="!comment.failed && comment.user_id == currentUser.user_id" ng-click="remove(comment)"></i>
+
+      <i class="icon ion-ios7-refresh-empty" ng-if="comment.failed && comment.user_id == currentUser.user_id" ng-click="retrySave(comment)"></i>
+
+
+    </div>
+
+</div>
