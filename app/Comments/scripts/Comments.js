@@ -1,29 +1,29 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('CommentsCtrl', ['$scope', 'GistofitService', 
-  function ($scope, Gistofit) {
-    $scope.comments = {};
-    $scope.loadCommentsFromEvent = function (event) {
-        if (event.data.recipient == "commentsView") {
-            $scope.id = event.data.id;
-            Gistofit.getComments($scope.id).then(function (response) {
-                $scope.comments = response.data;
-              });
-              $scope.$apply();
-        }
-    };
+angular.module('gistOfItApp').controller('CommentsCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', 
+  function ($scope, supersonic, $localStorage, Gistofit) {
+    $scope.comment_gist = null;
+    supersonic.bind($scope, "comment_gist");
+
+    $scope.$storage = $localStorage;
+     
+    document.addEventListener("visibilitychange", loadComments, false);
+    
+    function loadComments () {
+	$scope.comments = {};
+	Gistofit.getComments($scope.comment_gist).then(function (response) {
+	$scope.comments = response.data;
+      });
+    }
     
     $scope.add = function () {
         var content = $scope.content;
-        var id = $scope.id;
-        var url = $scope.url;
-
-        if (content != '') {
-        	Gistofit.commentGist(id, content, user).then(function () {
-		    Gistofit.getComments($scope.id).then(function (response) {
+        
+	if (content != '') {
+        	Gistofit.commentGist($scope.comment_gist, content, $scope.$storage.user).then(function () {
+		    Gistofit.getComments($scope.comment_gist).then(function (response) {
 			$scope.comments = response.data;
 		    });
-		    $scope.$apply();
 		});
         }
     }

@@ -1,7 +1,7 @@
 <div ng-controller="CurrentCtrl" id="Current">
- <div class="content" when-scrolled="myPagingFunction()">
-  <ul pull-to-refresh="onReload()">
-    <li ng-model="gists" ng-repeat="gist in gists" class="repeat-animation">
+ <div class="content" infinite-scroll="myPagingFunction()" infinite-scroll-distance="0" infinite-scroll-disabled='loading.busy'>
+  <ul>
+    <li ng-model="gists" ng-repeat="gist in gists | orderObjectBy:'date':true" class="repeat-animation">
         <div class="list card">
 
           <div class="item item-avatar">
@@ -27,5 +27,6 @@
         </div>
     </li>
   </ul>
+  <div ng-show="loading.busy" class="loader">Loading...</div>
 </div>
 </div>

@@ -2,7 +2,8 @@ angular.module('gistOfItApp', [
 'supersonic',
 'angular-embedly',
 'ngTouch',
-'ngStorage'
+'ngStorage',
+'infinite-scroll'
 ])
 .config(function(embedlyServiceProvider){
         embedlyServiceProvider.setKey('42f4925174814d68b90d0758d932fe14');
@@ -20,16 +21,20 @@ angular.module('gistOfItApp', [
     return output; 
   };
 })
-.directive('whenScrolled', function() {
-    return function(scope, elm, attr) {
-        var raw = elm[0];
-        
-        elm.bind('scroll', function() {
-            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
-                scope.$apply(attr.whenScrolled);
-            }
-        });
-    };
+.filter('orderObjectBy', function() {
+  return function(items, field, reverse) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+	filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      if(a[field] > b[field]) return 1;
+      if(a[field] < b[field]) return -1;
+      return 0;
+    });
+    if(reverse) filtered.reverse();
+    return filtered;
+  };
 });
 
 steroids.on('ready', function() {

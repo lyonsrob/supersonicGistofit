@@ -9,7 +9,7 @@ angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitSer
             $scope.gists = response.data.gists;
 
             angular.forEach($scope.gists,function(gist){
-                Gistofit.getExtract(gist, gist.url.key.raw.name).then(function(data) {
+                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
                         gist.extract = data;
                 });
 

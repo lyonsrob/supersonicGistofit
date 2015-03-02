@@ -1,12 +1,13 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage', 'supersonic', 'GistofitService', 
-  function ($scope, $localStorage, supersonic, Gistofit) {
+angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage', 'GistofitService', 
+  function ($scope, $localStorage, Gistofit) {
 
     $scope.$storage = $localStorage.$default({
     	user: {}
     });
-            
+   
+    var devicePlatform = device.platform;            
     $scope.addonsUndefined = steroids.addons === void 0;
     if (!$scope.addonsUndefined) {
       $scope.ready = false;

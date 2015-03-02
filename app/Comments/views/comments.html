@@ -60,7 +60,7 @@
       ng-repeat="comment in comments | orderBy:'-created_at'">
       <img ng-src="{{comment.user_image_url}}">
       <h2 class="user_name">
-        <strong>{{comment.user}}</strong><br />
+        <strong>{{comment.user.first_name}}</strong><br />
         <small>{{comment.created}}</small>
       </h2>
 

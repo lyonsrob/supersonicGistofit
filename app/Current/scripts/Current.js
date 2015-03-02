@@ -1,26 +1,31 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', '$localStorage', 'supersonic', 'GistofitService', 
-  function ($scope, $localStorage, supersonic, Gistofit) {
+angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', 
+  function ($scope, supersonic, $localStorage, Gistofit) {
+	
+    $scope.loading = {'busy': false};
+    $scope.gists = {};
+
+    $scope.comment_gist = null;
+    supersonic.bind($scope, "comment_gist");
     $scope.$storage = $localStorage;
 
     $scope.loadRecentGists = function() {
-        $scope.gists = {};
-
         Gistofit.getRecent().then(function (response) {
-	    $scope.gists = response.data.gists; 
+	    angular.forEach(response.data.gists, function(g) {
+        	g.date = Date.parse(g.date);
+		$scope.gists[g.id] = g;
+	    });
+
             angular.forEach($scope.gists,function(gist){
-                Gistofit.getExtract(gist, gist.url.key.raw.name).then(function(data) {
+                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
 			gist.extract = data;
 		});
 
                 Gistofit.getLikes(gist.id).then(function(response) {
                 	gist.likes = response.data.map;
                 	gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-                	$scope.gists[gist.id] = gist;
                 });
-            	
-
             });
 
             $scope.cursor = response.data.nextCursor; 
@@ -46,28 +51,29 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', '$localStorag
         var ref = window.open(url, '_blank', 'location=yes');
    };
 
-    $scope.load_extract_content = function (content) {
-        $scope.extract_content = content;
-    };
-
     $scope.myPagingFunction = function () {
+	if ($scope.loading.busy) return;
+    	$scope.loading.busy = true;
         Gistofit.getRecent($scope.cursor).then(function (response) {
-            var promises = [];
-        
             angular.forEach(response.data.gists,function(gist){
-                promises.push($scope.setGistExtract(gist));
+                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+			gist.extract = data;
+		});
+
+                Gistofit.getLikes(gist.id).then(function(response) {
+                	gist.likes = response.data.map;
+                	gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+                });
+                
+		gist.date = Date.parse(gist.date); 
+		$scope.gists[gist.id] = gist; 
             });
 
-            $q.all(promises).then(function success(data){
-                $scope.gists = $scope.gists.concat(response.data.gists); 
-            }, function failure(err){
-                // Can handle this is we want
-            });
-           
             if (response.data.nextCursor != "")
                 $scope.cursor = response.data.nextCursor; 
             $scope.userServiceInfo = response.data.userServiceInfo;
-          });
+            $scope.loading.busy = false;
+	 });
     };
    
    $scope.onReload = function() {
@@ -110,25 +116,13 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', '$localStorag
     };
 
     $scope.showComments = function(gist) {
-        var commentsView = new steroids.views.WebView({
-            location: "http://localhost/views/Comments/comments.html",
+	var commentsView = new supersonic.ui.View({
+            location: "Comments#comments",
             id: "comments"
-        });
-        
-	var message = {
-            recipient: "commentsView",
-            id: gist.id,
-            url: gist.url.key.raw.name
-        };
-        window.postMessage(message);
-        
+	});
+
+        $scope.comment_gist = gist.id; 
         var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
-        
-        // Navigate to your view
-        steroids.layers.push(
-        {
-            view: commentsView,
-            animation: fastSlide 
-        });
-    };
+        supersonic.ui.layers.push(commentsView, { animation: fastSlide }); 
+    }
 }]);

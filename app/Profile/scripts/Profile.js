@@ -9,12 +9,12 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
     	$localStorage.$reset();
     }
 
-    Gistofit.getUserGists($scope.$storage.user.id).then(function(response) {
-     	$scope.gistCount = response.data.length;
+    Gistofit.getUserGistCount($scope.$storage.user.id).then(function(response) {
+     	$scope.gistCount = response.data;
     });
     
-    Gistofit.getUserLikes($scope.$storage.user.id).then(function(response) {
-     	$scope.likeCount = response.data.length;
+    Gistofit.getUserGistLikesCount($scope.$storage.user.id).then(function(response) {
+     	$scope.likeCount = response.data;
     });
     
     Gistofit.getUserComments($scope.$storage.user.id).then(function(response) {
@@ -22,6 +22,15 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
     });
 
     steroids.view.navigationBar.show("Profile");
+
+    $scope.pushLikes = function() {
+	var view = new supersonic.ui.View({
+	  location: "Likes#likes",
+	  id: "likes"
+	});
+	supersonic.ui.layers.push(view);		 
+    }
+
     $scope.addonsUndefined = steroids.addons === void 0;
     if (!$scope.addonsUndefined) {
       $scope.ready = false;

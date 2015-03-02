@@ -41,12 +41,16 @@ module.exports =
       location: "Article#article"
     },
     {
+      id: "likes"
+      location: "Likes#likes"
+    }
+    {
       id: "addGist"
       location: "Gist#add"
     }
   ]
     
 ## Initial View
-  initialView:
-    id: "initialView"
-    location: "Login#login"
+#  initialView:
+#    id: "initialView"
+#    location: "Login#login"

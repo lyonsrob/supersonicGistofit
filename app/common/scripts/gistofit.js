@@ -9,13 +9,21 @@ if ( typeof angular == 'undefined' ) {
 */
 
 angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyService', function ($http, Embedly) {
-    var baseURL = 'http://127.0.0.1:8080/rest/v1';
-    //var baseURL = 'https://erudite-flag-623.appspot.com/rest/v1';
+    //var baseURL = 'http://127.0.0.1:8008/rest/v1';
+    //var baseURL = 'http://127.0.0.1:8080/rest/v1';
+    var baseURL = 'https://erudite-flag-623.appspot.com/rest/v1';
 
     function buildURL (method) {
         return baseURL + method;
     }
-    var Gistofit = {};
+    var Gistofit = function() {
+   	this.busy = false; 
+    };
+    
+    Gistofit.getGist = function (id) {
+        var url = buildURL('/gist/' + id); 
+        return $http({method: 'GET', url: url});
+    };
     
     Gistofit.getUser = function (id) {
         var url = buildURL('/user/' + id); 
@@ -27,13 +35,23 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
         return $http({method: 'POST', url: url, data: data});
     };
     
+    Gistofit.getUserGistCount = function (id) {
+        var url = buildURL('/user/' + id + '/gists/count'); 
+        return $http({method: 'GET', url: url});
+    };
+    
     Gistofit.getUserGists = function (id) {
         var url = buildURL('/user/' + id + '/gists'); 
         return $http({method: 'GET', url: url});
     };
 
-    Gistofit.getUserLikes = function (id) {
-        var url = buildURL('/user/' + id + '/likes'); 
+    Gistofit.getUserGistLikesCount = function (id) {
+        var url = buildURL('/user/' + id + '/gists/likes/count'); 
+        return $http({method: 'GET', url: url});
+    };
+    
+    Gistofit.getUserGistLikes = function (id) {
+        var url = buildURL('/user/' + id + '/gists/likes'); 
         return $http({method: 'GET', url: url});
     };
     
@@ -59,16 +77,16 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
         var url = buildURL('/gist/trending');
         return $http({method: 'GET', url: url});
     };
-    Gistofit.getExtract = function (obj, url) {
+    Gistofit.getExtract = function (url) {
         var escapedUrl = encodeURIComponent(url);
         var extractUrl = buildURL('/url/'+ escapedUrl + '/extract');
 
         return $http({method: 'GET', url: extractUrl}).then(function (response) {
             var data = response.data;
-            if (obj.extract == undefined || obj.extract == '') {
-                Embedly.extract(url).then(function(e){
+            if (response.data == undefined || response.data == '') {
+                return Embedly.extract(url).then(function(e){
                     Gistofit.setExtract(url, e.data);
-                    data = e.data;
+		    return e.data;
                 },
                  function(error) {
                     console.log(error);
