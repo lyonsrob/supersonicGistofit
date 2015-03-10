@@ -1,11 +1,12 @@
-<body class="content" style="background:#000;" ng-controller="GistCtrl" id="Gist">
+<div ng-controller="GistCtrl" id="Gist">
+  <div class="">
     <div class="bar bar-header">
-        <button class="button button-icon icon ion-ios7-close-empty" onclick="steroids.modal.hide()"></button>
+        <button class="button button-icon icon super-ios7-close-empty" onclick="steroids.modal.hide()"></button>
         <div class="h1 title">#GistOfIt</div>
         <button class="button button-clear button-positive" ng-click="addGist(gist);" >Submit</button>
     </div>
 
-    <div class="content has-header ionic-pseudo">
+    <div class="has-header ionic-pseudo">
 	<div class="item item-avatar">
 		<img ng-src="{{ extract.images[0].url }}">
 		<h2>{{extract.title}}</h2>
@@ -26,4 +27,5 @@
 		</label>
 	</div>
     </div>
-</body>
+  </div>
+</div>

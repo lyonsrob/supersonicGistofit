@@ -3,9 +3,10 @@
 angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
     
-    $scope.$storage = $localStorage; 
+    $scope.$storage = $localStorage;
 
     $scope.logout = function () {
+	$scope.facebookLogout();
     	$localStorage.$reset();
     }
 
@@ -48,25 +49,27 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
           });
         });
       });
-      $scope.facebookLogin = function() {
-        return steroids.addons.facebook.login().then(function() {
-          return $scope.$apply(function() {
-            return $scope.loginStatus = true;
-          });
-        });
-      };
-      $scope.facebookGraphQuery = function() {
-        return steroids.addons.facebook.api('/me', {
-          fields: 'first_name, last_name, picture.type(normal)'
-        }).then(function(response) {
-          return $scope.$apply(function() {
-            $scope.firstName = response.first_name;
-            $scope.lastName = response.last_name;
-            $scope.profilePicture = response.picture.data.url;
-	    return;
-          });
-        });
-      };
+      $scope.facebookLogin = function() 
+	{
+        	return steroids.addons.facebook.login(['public_profile', 'email', 'user_likes', 'user_location', 'user_interests', 'user_education_history']).then(function() 	   
+			{
+				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name'}).then(function(user) 
+					{
+						Gistofit.createUser(user).then(function(e) {
+							$scope.$storage.user = e.data;
+						});
+					
+						return $scope.$apply(function() {
+							steroids.initialView.dismiss({
+							  animation: dismissAnimation
+							});
+						
+							return $scope.loginStatus = true;
+						});
+					});
+			});
+      	};
+      
       return $scope.facebookLogout = function() {
         return steroids.addons.facebook.logout().then(function() {
           return $scope.$apply(function() {

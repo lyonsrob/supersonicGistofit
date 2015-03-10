@@ -50,7 +50,7 @@ module.exports =
     }
   ]
     
-## Initial View
-#  initialView:
-#    id: "initialView"
-#    location: "Login#login"
+# Initial View
+  initialView:
+    id: "initialView"
+    location: "Login#login"

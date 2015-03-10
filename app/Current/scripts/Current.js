@@ -1,7 +1,21 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', 
-  function ($scope, supersonic, $localStorage, Gistofit) {
+angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', '$q', 
+  function ($scope, supersonic, $localStorage, Gistofit, $q) {
+
+  var reloadButton = new steroids.buttons.NavigationBarButton();
+  reloadButton.imagePath = "/icons/spinner11.png";
+
+  reloadButton.onTap = function() { 
+  	$scope.onReload();
+  };
+
+  steroids.view.navigationBar.update({
+    overrideBackButton: false,
+    buttons: {
+      left: [reloadButton]
+    }
+  });
 	
     $scope.loading = {'busy': false};
     $scope.gists = {};
@@ -81,11 +95,25 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
       var deferred = $q.defer();
       setTimeout(function() {
         Gistofit.getNewest($scope.last_seen).then(function (response) {
-            $scope.setGistExtract(response.data.gists[0]);
-            $scope.gists.unshift.apply($scope.gists, response.data.gists);
-            $scope.last_seen = response.data.lastSeen;
+            angular.forEach(response.data.gists,function(gist){
+                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+			gist.extract = data;
+		});
+
+                Gistofit.getLikes(gist.id).then(function(response) {
+                	gist.likes = response.data.map;
+                	gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+                });
+                
+		gist.date = Date.parse(gist.date); 
+		$scope.gists[gist.id] = gist; 
+            });
+	    if (response.data.lastSeen != "" && typeof response.data.lastSeen != "undfined") {
+            	$scope.last_seen = response.data.lastSeen;
+	    }
           });
         deferred.resolve(true);
+    	$scope.$apply()
       }, 1000);
       return deferred.promise;
     };

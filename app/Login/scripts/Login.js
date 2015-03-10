@@ -3,11 +3,27 @@
 angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
 
+    var dismissAnimation = new steroids.Animation({
+	transition: "flipHorizontalFromRight",
+	duration: 1.0,
+	curve: "easeInOut"
+    });
+
+
     $scope.$storage = $localStorage.$default({
     	user: {}
     });
+
+    if ($scope.$storage.user.id) {
+	
+        return steroids.addons.facebook.login(['public_profile']).then(function() 	   
+	{
+		steroids.initialView.dismiss({
+	  		animation: dismissAnimation
+		});
+    	});
+    }
    
-    var devicePlatform = device.platform;            
     $scope.addonsUndefined = steroids.addons === void 0;
     if (!$scope.addonsUndefined) {
       $scope.ready = false;
@@ -25,12 +41,6 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 						});
 					
 						return $scope.$apply(function() {
-							var dismissAnimation = new steroids.Animation({
-								transition: "flipHorizontalFromRight",
-								duration: 1.0,
-								curve: "easeInOut"
-							});
-
 							steroids.initialView.dismiss({
 							  animation: dismissAnimation
 							});
@@ -44,6 +54,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
       return $scope.facebookLogout = function() {
         return steroids.addons.facebook.logout().then(function() {
           return $scope.$apply(function() {
+	    delete $scope.$storage.user;
             return $scope.loginStatus = false;
           });
         });

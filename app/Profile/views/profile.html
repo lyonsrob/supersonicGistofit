@@ -47,7 +47,7 @@
         <img ng-src="{{ profilePicture }}" class="profile-image">
         <div class="profile-name">{{ firstName }} {{ lastName }}</div>
 </div>
-<div class="button-bar">
+<div class="button-bar" ng-show="$storage.user.id">
   <a class="button">        
    	<em class="tab-number">
 		<ng-pluralize count="gistCount" 
@@ -76,12 +76,13 @@
     </em>
    </a>
 </div>
-    <div ng-show="loginStatus">
-        <div class="topcoat-button full center block" ng-click="facebookLogout()">Logout from Facebook</div>
+    <div ng-show="$storage.user.id">
+    	<button ng-click="logout()" class="button button-block button-balanced">Logout</button>
     </div>
-    
-    <button class="button icon-top ion-arrow-up-b" ng-click="logout()">Logout</button>
-    <button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
+   
+    <div ng-show="!$storage.user.id"> 
+    	<button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
+    </div>
 
 <ul class="list">
 

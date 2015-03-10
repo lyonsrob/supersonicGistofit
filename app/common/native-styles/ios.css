@@ -38,7 +38,7 @@ tab-bar {
 }
 
 tab-bar-item#current {
-  background-image: url(icons/world.svg);
+  background-image: url(icons/clock.svg);
 }
 
 tab-bar-item#trending {
