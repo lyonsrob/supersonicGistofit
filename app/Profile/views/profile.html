@@ -43,69 +43,56 @@
 
 <div ng-controller="ProfileCtrl" id="Profile">
 <div class="content">
-<div class="profile-card">
-        <img ng-src="{{ profilePicture }}" class="profile-image">
-        <div class="profile-name">{{ firstName }} {{ lastName }}</div>
-</div>
-<div class="button-bar" ng-show="$storage.user.id">
-  <a class="button">        
-   	<em class="tab-number">
-		<ng-pluralize count="gistCount" 
-                when="{'0': 'No Gists',
-                       '1': '{{gistCount}} Gist',
-                       'other': '{{gistCount}} Gists'}">
-  		</ng-pluralize>
-	</em>
-  </a>
-  <a class="button" ng-click="pushLikes()">
-    <em class="tab-number">
-		<ng-pluralize count="likeCount" 
-                when="{'0': 'No Likes',
-                       '1': '{{likeCount}} Like',
-                       'other': '{{likeCount}} Likes'}">
-  		</ng-pluralize>
-    </em>
-  </a>
-  <a class="button">
-    <em class="tab-number">
-		<ng-pluralize count="commentCount" 
-                when="{'0': 'No Comments',
-                       '1': '{{commentCount}} Comment',
-                       'other': '{{commentCount}} Comments'}">
-  		</ng-pluralize>
-    </em>
-   </a>
-</div>
-    <div ng-show="$storage.user.id">
-    	<button ng-click="logout()" class="button button-block button-balanced">Logout</button>
-    </div>
-   
-    <div ng-show="!$storage.user.id"> 
-    	<button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
-    </div>
+	<div class="profile-card">
+		<img ng-src="{{ $storage.user.profilePicture || '/img/Gakuseisean-Ivista-2-Misc-User.jpg' }}" class="profile-image">
+		<div class="profile-name">{{ $storage.user.firstName }} {{ $storage.user.lastName }}</div>
 
-<ul class="list">
+		<button ng-show="$storage.user.id" ng-click="logout()" class="button button-small button-balanced">Logout</button>
+		<button ng-show="!$storage.user.id" ng-click="facebookLogin()" class="button button-small button-balanced">Log in with Facebook</button>
+	</div>
 
-  <li class="item item-toggle">
-     Auto Post to Facebook
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-    <li class="item item-toggle">
-     Auto Post to Twitter
-     <label class="toggle toggle-assertive">
-       <input type="checkbox">
-       <div class="track">
-         <div class="handle"></div>
-       </div>
-     </label>
-  </li>
-</ul>
+	<div class="list" ng-show="$storage.user.id">
 
-</div>
-</div>
+	  <a class="item item-icon-left" href="#">
+	    <i class="icon super-social-google"></i>
+	    Gists
+	    <span class="badge badge-positive">{{gistCount || 0}}</span>
+	  </a>
+	  
+	  <a class="item item-icon-left" href="#">
+	    <i class="icon super-heart"></i>
+	    Likes 
+	    <span class="badge badge-positive">{{likeCount || 0}}</span>
+	  </a>
+	  <a class="item item-icon-left" href="#">
+	    <i class="icon super-reply"></i>
+	    Comments 
+	    <span class="badge badge-positive">{{commentCount || 0}}
+	    </span>
+	  </a>
+	<div class="item item-divider">
+		 Social 
+		</div>
+
+	  <li class="item item-toggle">
+	     Auto Post to Facebook
+	     <label class="toggle toggle-assertive">
+	       <input type="checkbox">
+	       <div class="track">
+		 <div class="handle"></div>
+	       </div>
+	     </label>
+	  </li>
+	    <li class="item item-toggle">
+	     Auto Post to Twitter
+	     <label class="toggle toggle-assertive">
+	       <input type="checkbox">
+	       <div class="track">
+		 <div class="handle"></div>
+	       </div>
+	     </label>
+	  </li>
+
+	</div>
+   </div>
 </div>

@@ -20,7 +20,7 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
    	this.busy = false; 
     };
     
-    Gistofit.getGist = function (id) {
+    Gistofit.getGist = function (id) {i
         var url = buildURL('/gist/' + id); 
         return $http({method: 'GET', url: url});
     };
@@ -57,11 +57,6 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
     
     Gistofit.getUserComments = function (id) {
         var url = buildURL('/user/' + id + '/comments'); 
-        return $http({method: 'GET', url: url});
-    };
-
-    Gistofit.getUserGists = function (id) {
-        var url = buildURL('/user/' + id + '/gists'); 
         return $http({method: 'GET', url: url});
     };
 

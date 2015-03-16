@@ -9,9 +9,23 @@ angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitSer
             $scope.gists = response.data.gists;
 
             angular.forEach($scope.gists,function(gist){
-                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-                        gist.extract = data;
-                });
+		if (gist.url) {
+			Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+				gist.extract = data;
+			});
+		}
+		
+		if (gist.id) {
+			Gistofit.getLikes(gist.id).then(function(response) {
+				gist.likes = response.data.map;
+				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+			});
+			
+			Gistofit.getLikes(gist.id).then(function(response) {
+				gist.likes = response.data.map;
+				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+			});
+		}
 
             });
 

@@ -7,14 +7,14 @@ angular.module('gistOfItApp').controller('CommentsCtrl', ['$scope', 'supersonic'
 
     $scope.$storage = $localStorage;
      
-    document.addEventListener("visibilitychange", loadComments, false);
-    
     function loadComments () {
 	$scope.comments = {};
 	Gistofit.getComments($scope.comment_gist).then(function (response) {
 	$scope.comments = response.data;
       });
     }
+    
+    document.addEventListener("visibilitychange", loadComments, false);
     
     $scope.add = function () {
         var content = $scope.content;
@@ -28,10 +28,6 @@ angular.module('gistOfItApp').controller('CommentsCtrl', ['$scope', 'supersonic'
         }
     }
 
-    steroids.logger.log('loading comments!');
-    
-    window.addEventListener("message", $scope.loadCommentsFromEvent);
-    
     steroids.view.navigationBar.update({
         buttons: {
             left: [],

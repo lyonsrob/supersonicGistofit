@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorage', 'GistofitService', 
-  function ($scope, $localStorage, Gistofit) {
+angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorage', 'GistofitService', '$timeout', 
+  function ($scope, $localStorage, Gistofit, $timeout) {
     
     $scope.$storage = $localStorage;
 
@@ -10,18 +10,30 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
     	$localStorage.$reset();
     }
 
-    Gistofit.getUserGistCount($scope.$storage.user.id).then(function(response) {
-     	$scope.gistCount = response.data;
-    });
-    
-    Gistofit.getUserGistLikesCount($scope.$storage.user.id).then(function(response) {
-     	$scope.likeCount = response.data;
-    });
-    
-    Gistofit.getUserComments($scope.$storage.user.id).then(function(response) {
-     	$scope.commentCount = response.data.length;
-    });
 
+    if ($scope.$storage.user.id) {
+	    (function refreshGistCount() {
+		Gistofit.getUserGistCount($scope.$storage.user.id).then(function(response) {
+			$scope.gistCount = response.data;
+			$timeout(refreshGistCount, 1000);
+		});
+	    })();
+	    
+	    (function refreshLikeCount() {
+		Gistofit.getUserGistLikesCount($scope.$storage.user.id).then(function(response) {
+			$scope.likeCount = response.data;
+			$timeout(refreshLikeCount, 1000);
+		});
+	    })();
+	    
+	    (function refreshCommentCount() {
+		Gistofit.getUserComments($scope.$storage.user.id).then(function(response) {
+			$scope.commentCount = response.data.length;
+			$timeout(refreshCommentCount, 1000);
+		});
+	    })();
+    }
+    
     steroids.view.navigationBar.show("Profile");
 
     $scope.pushLikes = function() {
@@ -53,10 +65,11 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	{
         	return steroids.addons.facebook.login(['public_profile', 'email', 'user_likes', 'user_location', 'user_interests', 'user_education_history']).then(function() 	   
 			{
-				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name'}).then(function(user) 
+				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name, picture.type(normal), likes' }).then(function(user) 
 					{
-						Gistofit.createUser(user).then(function(e) {
+						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email}).then(function(e) {
 							$scope.$storage.user = e.data;
+							$scope.$storage.user.profilePicture = user.picture.data.url;
 						});
 					
 						return $scope.$apply(function() {
@@ -69,6 +82,18 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 					});
 			});
       	};
+     $scope.facebookGraphQuery = function() {
+        return steroids.addons.facebook.api('/me', {
+          fields: 'first_name, last_name, picture.type(normal)'
+        }).then(function(response) {
+          return $scope.$apply(function() {
+            $scope.firstName = response.first_name;
+            $scope.lastName = response.last_name;
+            $scope.profilePicture = response.picture.data.url;
+	    return;
+          });
+        });
+      };
       
       return $scope.facebookLogout = function() {
         return steroids.addons.facebook.logout().then(function() {
