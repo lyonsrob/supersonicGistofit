@@ -45,8 +45,6 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
     $scope.loading = {'busy': false};
     $scope.gists = {};
 
-    $scope.comment_gist = null;
-    supersonic.bind($scope, "comment_gist");
     $scope.$storage = $localStorage;
 
     $scope.loadRecentGists = function() {
@@ -64,17 +62,19 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 		}
 
 		if (gist.id) {
+			(function refreshLikeCount() {
 			Gistofit.getLikes(gist.id).then(function(response) {
 				gist.likes = response.data.map;
 				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+				$timeout(refreshLikeCount, 1000);
 			});
+			})();
 			(function refreshCommentCount() {
 				Gistofit.getComments(gist.id).then(function(response) {
 					gist.comments = response.data;
-					$timeout(refreshCommentCount, 5000);
+					$timeout(refreshCommentCount, 1000);
 				});
 			})();
-			
 		}
             });
 
@@ -100,8 +100,16 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 		});
 	}
     };
+
+function nativePluginResultHandler() {
+    return; 
+}
+function nativePluginErrorHandler() {
+    return; 
+}
   
    $scope.openURL = function(url) {
+	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", url, 1);
         var ref = window.open(url, '_blank', 'location=yes');
    };
 
@@ -131,19 +139,31 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
     };
    
    $scope.onReload = function() {
-      console.log('reloading');
       var deferred = $q.defer();
       setTimeout(function() {
         Gistofit.getNewest($scope.last_seen).then(function (response) {
             angular.forEach(response.data.gists,function(gist){
-                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-			gist.extract = data;
-		});
+		if (gist.url) {
+			Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+				gist.extract = data;
+			});
+		}
 
-                Gistofit.getLikes(gist.id).then(function(response) {
-                	gist.likes = response.data.map;
-                	gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-                });
+		if (gist.id) {
+			(function refreshLikeCount() {
+			Gistofit.getLikes(gist.id).then(function(response) {
+				gist.likes = response.data.map;
+				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+				$timeout(refreshLikeCount, 1000);
+			});
+			})();
+			(function refreshCommentCount() {
+				Gistofit.getComments(gist.id).then(function(response) {
+					gist.comments = response.data;
+					$timeout(refreshCommentCount, 1000);
+				});
+			})();
+		}
                 
 		gist.date = Date.parse(gist.date); 
 		$scope.gists[gist.id] = gist; 
@@ -189,7 +209,13 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
             id: "comments"
 	});
 
-        $scope.comment_gist = gist.id; 
+	var message = {
+	  sender: "Current#current",
+	  gistId: gist.id
+	};
+
+	supersonic.data.channel('load_comments').publish(message);
+        
         var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
         supersonic.ui.layers.push(commentsView, { animation: fastSlide }); 
     }

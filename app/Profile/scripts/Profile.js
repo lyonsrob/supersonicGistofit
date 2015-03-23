@@ -67,9 +67,8 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 			{
 				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name, picture.type(normal), likes' }).then(function(user) 
 					{
-						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email}).then(function(e) {
+						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email, profile_picture: user.picture.data.url}).then(function(e) {
 							$scope.$storage.user = e.data;
-							$scope.$storage.user.profilePicture = user.picture.data.url;
 						});
 					
 						return $scope.$apply(function() {

@@ -22,6 +22,9 @@ angular.module('gistOfItApp', [
 .config(function(embedlyServiceProvider){
         embedlyServiceProvider.setKey('42f4925174814d68b90d0758d932fe14');
 })
+.filter('escape', function() {
+  return window.encodeURIComponent;
+})
 .filter('domain', function() {
   return function(url) {
    var matches,
@@ -109,3 +112,18 @@ steroids.view.navigationBar.update({
     }
 });
 
+document.addEventListener("deviceready", onDeviceReady, false);
+
+var gaPlugin;
+
+function onDeviceReady() {
+    gaPlugin = window.plugins.gaPlugin;
+    gaPlugin.init(successHandler, errorHandler, "UA-53420229-1", 10);
+}
+
+function successHandler() {
+    return; 
+}
+function errorHandler() {
+    return; 
+}

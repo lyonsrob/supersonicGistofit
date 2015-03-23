@@ -6,8 +6,8 @@ function toArrayObj(array) {
  return array;
 }
 
-angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitService', 
-  function ($scope, Gistofit) {
+angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitService', '$timeout', 
+  function ($scope, Gistofit, $timeout) {
 
     $scope.$watch('search', function (value) {
         Gistofit.searchTopUrls(value).then(function (response) {
@@ -15,8 +15,14 @@ angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitServi
             var promises = []; 
 
             angular.forEach($scope.results,function(result){
-               Gistofit.getExtract(result, result.url).then(function(data) {
+               Gistofit.getExtract(result.url).then(function(data) {
                         result.extract = data;
+			(function refreshGistCountForURL() {
+				Gistofit.getGistsCountForURL(result.url).then(function(response) {
+					result.gist_count = response.data;
+					//$timeout(refreshGistCountForURL, 1000);
+				});
+			})();
                 });
             });
          });

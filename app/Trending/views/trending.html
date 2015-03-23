@@ -1,12 +1,15 @@
 <div ng-controller="TrendingCtrl" id="Trending">
 <div class="content">
- <div class="list">
-	<a class="item item-thumbnail-left" ng-model="gists" ng-repeat="gist in gists" href="#">
+ <div class="list" ng-cloak>
+	<a class="item item-thumbnail-left" ng-model="gists" ng-repeat="gist in gists" ng-click="showComments(gist)">
       		<img ng-src="{{ gist.extract.images[0].url }}">
-      		<i class="icon super-heart">{{gist.likes.total}}</i>
-      		<i class="icon super-chatbubble">{{gist.comments.length}}</i>
+		<button class="button button-small button-clear button-balanced icon-left super-heart">{{gist.likes.total}}</button>
+		<button class="button button-small button-clear button-balanced icon-left super-chatbubble">{{gist.comments.length}}</button>
 		<h2>{{gist.extract.title}}</h2>
       		<p>{{gist.content}} #gistofit</p>
+		<button class="button button-clear button-balanced button-large" style="position: absolute; top: 10px; right: 10px; max-width: 80px; max-height: 80px; width: 100%;">
+			<i class="icon super-reply"></i>
+		</button>
     	</a>
   </div>
 </div>

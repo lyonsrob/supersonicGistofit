@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitService', 
-  function ($scope, Gistofit) {
+angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitService', '$timeout', 
+  function ($scope, Gistofit, $timeout) {
     $scope.loadTrendingGists = function() {
         $scope.gists = null; 
         
@@ -16,15 +16,19 @@ angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitSer
 		}
 		
 		if (gist.id) {
+			(function refreshLikeCount() {
 			Gistofit.getLikes(gist.id).then(function(response) {
 				gist.likes = response.data.map;
 				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+				$timeout(refreshLikeCount, 1000);
 			});
-			
-			Gistofit.getLikes(gist.id).then(function(response) {
-				gist.likes = response.data.map;
-				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-			});
+			})();
+			(function refreshCommentCount() {
+				Gistofit.getComments(gist.id).then(function(response) {
+					gist.comments = response.data;
+					$timeout(refreshCommentCount, 1000);
+				});
+			})();
 		}
 
             });
@@ -39,27 +43,21 @@ angular.module('gistOfItApp').controller('TrendingCtrl', ['$scope', 'GistofitSer
 		var ref = window.open(url, '_blank', 'location=yes');
 	   }
 
-    
-    $scope.showArticle = function(article) {
-        var message = {
-            recipient: "articleView",
-            article: article,
-        }
-        window.postMessage(message);
-        
-        var articleView = new steroids.views.WebView({
-            location: "http://localhost/views/Article/article.html",
-            id: "article"
-        });
+    $scope.showComments = function(gist) {
+	var commentsView = new supersonic.ui.View({
+            location: "Comments#comments",
+            id: "comments"
+	});
+
+	var message = {
+	  sender: "Trending#trending",
+	  gistId: gist.id
+	};
+
+	supersonic.data.channel('load_comments').publish(message);
         
         var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
-
-        // Navigate to your view
-        steroids.layers.push(
-        {
-            view: articleView,
-            animation: fastSlide
-        });
+        supersonic.ui.layers.push(commentsView, { animation: fastSlide }); 
     }
     
     steroids.logger.log('loading trending gists!');

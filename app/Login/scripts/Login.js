@@ -2,13 +2,11 @@
 
 angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
-
     var dismissAnimation = new steroids.Animation({
 	transition: "flipHorizontalFromRight",
 	duration: 1.0,
 	curve: "easeInOut"
     });
-
 
     $scope.$storage = $localStorage.$default({
     	user: {}
@@ -20,12 +18,6 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
     	});
     }
   
-    $scope.checkLoginStatus = function() {
-        steroids.addons.facebook.getLoginStatus().then(function(response) {
-        	console.log(response);
-	});
-    }
-
     $scope.dismissLogin = function() {
 	steroids.initialView.dismiss({
 		animation: dismissAnimation
@@ -55,9 +47,8 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 			{
 				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name, picture.type(normal), likes' }).then(function(user) 
 					{
-						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email}).then(function(e) {
+						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email, profile_picture: user.picture.data.url}).then(function(e) {
 							$scope.$storage.user = e.data;
-							$scope.$storage.user.profilePicture = user.picture.data.url;
 						});
 					
 						return $scope.$apply(function() {

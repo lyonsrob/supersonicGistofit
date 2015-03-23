@@ -37,16 +37,16 @@ module.exports =
       location: "Comments#comments"
     },
     {
-      id: "article"
-      location: "Article#article"
-    },
-    {
       id: "likes"
       location: "Likes#likes"
-    }
+    },
     {
       id: "addGist"
       location: "Gist#add"
+    },
+    {
+      id: "viewGist"
+      location: "Gist#view"
     }
   ]
     

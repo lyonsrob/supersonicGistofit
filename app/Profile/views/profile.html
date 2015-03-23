@@ -53,18 +53,18 @@
 
 	<div class="list" ng-show="$storage.user.id">
 
-	  <a class="item item-icon-left" href="#">
+	  <a class="item item-icon-left" ng-click="pushGists()">
 	    <i class="icon super-social-google"></i>
 	    Gists
 	    <span class="badge badge-positive">{{gistCount || 0}}</span>
 	  </a>
 	  
-	  <a class="item item-icon-left" href="#">
+	  <a class="item item-icon-left" ng-click="pushLikes()">
 	    <i class="icon super-heart"></i>
 	    Likes 
 	    <span class="badge badge-positive">{{likeCount || 0}}</span>
 	  </a>
-	  <a class="item item-icon-left" href="#">
+	  <a class="item item-icon-left" ng-click="pushComments()">
 	    <i class="icon super-reply"></i>
 	    Comments 
 	    <span class="badge badge-positive">{{commentCount || 0}}

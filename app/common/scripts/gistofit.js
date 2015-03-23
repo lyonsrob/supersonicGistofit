@@ -20,7 +20,7 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
    	this.busy = false; 
     };
     
-    Gistofit.getGist = function (id) {i
+    Gistofit.getGist = function (id) {
         var url = buildURL('/gist/' + id); 
         return $http({method: 'GET', url: url});
     };
@@ -96,6 +96,18 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
         var url = buildURL('/url/'+ escapedUrl + '/extract'); 
         return $http({method: 'POST', url: url, data: data, headers: {'Content-Type': 'text/plain'}});
     };
+    Gistofit.getGistsForURL = function (inputUrl) {
+        var escapedUrl = encodeURIComponent(inputUrl);
+        var url = buildURL('/gist/url/' + escapedUrl); 
+        return $http({method: 'GET', url: url});
+    };
+
+    Gistofit.getGistsCountForURL = function (inputUrl) {
+        var escapedUrl = encodeURIComponent(inputUrl);
+        var url = buildURL('/gist/url/' + escapedUrl + '/count'); 
+        return $http({method: 'GET', url: url});
+    };
+    
     Gistofit.addGist = function (inputUrl, content, userId) {
         url = buildURL ('/gist/url/' + encodeURIComponent(inputUrl));
         var data = {'content': content, 'userId': userId};

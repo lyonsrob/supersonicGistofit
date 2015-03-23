@@ -2,27 +2,35 @@
 
 angular.module('gistOfItApp').controller('CommentsCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', 
   function ($scope, supersonic, $localStorage, Gistofit) {
-    $scope.comment_gist = null;
-    supersonic.bind($scope, "comment_gist");
 
     $scope.$storage = $localStorage;
-     
-    function loadComments () {
-	$scope.comments = {};
-	Gistofit.getComments($scope.comment_gist).then(function (response) {
-	$scope.comments = response.data;
-      });
-    }
-    
-    document.addEventListener("visibilitychange", loadComments, false);
-    
+
+    supersonic.data.channel('load_comments').subscribe( function(message) {
+	$scope.content = '';
+	$scope.gist_id = message.gistId;
+	Gistofit.getComments($scope.gist_id).then(function (response) {
+	    $scope.comments = response.data;
+     	    angular.forEach($scope.comments, function(comment) {
+	    	Gistofit.getUser(comment.user.key.raw.id).then(function (response) {
+			angular.extend(comment.user, response.data);
+		});
+	    });
+	});
+    });   
+
     $scope.add = function () {
         var content = $scope.content;
         
 	if (content != '') {
-        	Gistofit.commentGist($scope.comment_gist, content, $scope.$storage.user).then(function () {
-		    Gistofit.getComments($scope.comment_gist).then(function (response) {
+        	Gistofit.commentGist($scope.gist_id, content, $scope.$storage.user).then(function () {
+		    Gistofit.getComments($scope.gist_id).then(function (response) {
 			$scope.comments = response.data;
+			    angular.forEach($scope.comments, function(comment) {
+				Gistofit.getUser(comment.user.key.raw.id).then(function (response) {
+					angular.extend(comment.user, response.data);
+				});
+	    });
+			$scope.content = '';
 		    });
 		});
         }
