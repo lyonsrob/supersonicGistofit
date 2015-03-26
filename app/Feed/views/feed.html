@@ -3,12 +3,10 @@
   <ul >
     <li ng-model="feeds" ng-repeat="feed in feeds" class="repeat-animation">
         <div class="list card">
-
-          <div class="item item-avatar">
-            <img ng-src="{{ feed.extract.favicon_url }}">
-            <h2>{{feed.extract.title}}</h2>
-            <p>via {{ feed.extract.provider_name}}</p>
-          </div>
+	  <div class="item item-avatar">
+	    <img ng-src="{{ feed.extract.favicon_url }}">
+	    <h2>via {{feed.extract.provider_name}}</h2>
+	  </div>
 
           <div class="item item-body">
             <h2>
@@ -22,7 +20,7 @@
           </div>
            
           <div class="item item-input-inset">
-            <button class="button button-small" ng-click="showGistPrompt(feed)"  >#GistOfIt</button>
+            <button class="button button-small" ng-click="showGistPrompt(feed, $index)"  >#GistOfIt</button>
           </div>
         </div>
     </li>

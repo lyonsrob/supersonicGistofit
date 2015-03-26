@@ -2,46 +2,47 @@
 
 angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', '$q', '$timeout', 
   function ($scope, supersonic, $localStorage, Gistofit, $q, $timeout) {
-   
-  $scope.reloadAfterSubmit = function(event) {
-        if (event.data.recipient == "currentView") {
-            var target = $("div.content");
-         
-            //disable touch scroll to kill existing inertial movement
-            target.css({
-                '-webkit-overflow-scrolling' : 'auto',
-                'overflow-y' : 'hidden'
-            });
-         
-            //animate
-            target.animate({ scrollTop: 0}, 300, "swing", function(){
-         
-                //re-enable touch scrolling
-                target.css({
-                    '-webkit-overflow-scrolling' : 'touch',
-                    'overflow-y' : 'scroll'
-                });
-            });
-        	$scope.onReload();
-	}
+
+  function setupLikes(gist) {
+	(function refreshLikeCount() {
+		Gistofit.getLikes(gist.id).then(function(response) {
+			gist.likes = response.data.map;
+			gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+			//$timeout(refreshLikeCount, 1000);
+		});
+	})();
   }
-    
-  window.addEventListener("message", $scope.reloadAfterSubmit);
-
-  var reloadButton = new steroids.buttons.NavigationBarButton();
-  reloadButton.imagePath = "/icons/spinner11.png";
-
-  reloadButton.onTap = function() { 
-  	$scope.onReload();
-  };
-
-  steroids.view.navigationBar.update({
-    overrideBackButton: false,
-    buttons: {
-      left: [reloadButton]
-    }
+  
+  function setupComments(gist) {
+	(function refreshCommentCount() {
+		Gistofit.getComments(gist.id).then(function(response) {
+			gist.comments = response.data;
+			//$timeout(refreshCommentCount, 1000);
+		});
+	})();
+  }
+ 	
+  supersonic.data.channel('add_gist').subscribe( function(message) {
+	    var target = $("div.content");
+	 
+	    //disable touch scroll to kill existing inertial movement
+	    target.css({
+		'-webkit-overflow-scrolling' : 'auto',
+		'overflow-y' : 'hidden'
+	    });
+	 
+	    //animate
+	    target.animate({ scrollTop: 0}, 300, "swing", function(){
+	 
+		//re-enable touch scrolling
+		target.css({
+		    '-webkit-overflow-scrolling' : 'touch',
+		    'overflow-y' : 'scroll'
+		});
+	    });
+	    $scope.onReload();
   });
-	
+    
     $scope.loading = {'busy': false};
     $scope.gists = {};
 
@@ -62,19 +63,8 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 		}
 
 		if (gist.id) {
-			(function refreshLikeCount() {
-			Gistofit.getLikes(gist.id).then(function(response) {
-				gist.likes = response.data.map;
-				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-				$timeout(refreshLikeCount, 1000);
-			});
-			})();
-			(function refreshCommentCount() {
-				Gistofit.getComments(gist.id).then(function(response) {
-					gist.comments = response.data;
-					$timeout(refreshCommentCount, 1000);
-				});
-			})();
+			setupLikes(gist);
+			setupComments(gist);
 		}
             });
 
@@ -122,11 +112,10 @@ function nativePluginErrorHandler() {
 			gist.extract = data;
 		});
 
-                Gistofit.getLikes(gist.id).then(function(response) {
-                	gist.likes = response.data.map;
-                	gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-                });
-                
+                if (gist.id) {
+			setupLikes(gist);
+			setupComments(gist);
+		} 
 		gist.date = Date.parse(gist.date); 
 		$scope.gists[gist.id] = gist; 
             });
@@ -179,7 +168,7 @@ function nativePluginErrorHandler() {
     };
     
     $scope.loadRecentGists();
-    steroids.view.navigationBar.show("Current");
+    steroids.view.navigationBar.show("Comment");
     
     $scope.showArticle = function(article) {
         var articleView = new steroids.views.WebView({

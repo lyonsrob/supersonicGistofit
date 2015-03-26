@@ -56,29 +56,9 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         var ref = window.open(url, '_blank', 'location=yes');
    }
 
-    $scope.showArticle = function(article) {
-        var message = {
-            recipient: "articleView",
-            article: article,
-        }
-        window.postMessage(message);
-        
-        var articleView = new steroids.views.WebView({
-            location: "http://localhost/views/Article/article.html",
-            id: "article"
-        });
-        
-        var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
-
-        // Navigate to your view
-        steroids.layers.push(
-        {
-            view: articleView,
-            animation: fastSlide 
-        });
-    }
-    
-    $scope.showGistPrompt = function(feed) {
+    $scope.showGistPrompt = function(feed, index) {
+	$scope.selectedFeed = index;
+ 
         var message = {
             recipient: "gistModalView",
             feed: feed
@@ -95,7 +75,12 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
     }
     
     $scope.loadAllFeeds();
-    steroids.view.navigationBar.show("Feed");
+    steroids.view.navigationBar.show("Learn");
+
+supersonic.data.channel('add_gist').subscribe( function(message) {
+	$scope.feeds.splice($scope.selectedFeed, 1);
+}); 
+
 }]);
 
 angular.module('gistOfItApp').factory('FeedService',['$http',function($http){
@@ -105,4 +90,4 @@ angular.module('gistOfItApp').factory('FeedService',['$http',function($http){
         }
     }
 }]);
-
+  

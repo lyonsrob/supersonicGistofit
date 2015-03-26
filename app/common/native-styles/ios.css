@@ -38,17 +38,18 @@ tab-bar {
 }
 
 tab-bar-item#current {
-  background-image: url(icons/clock.svg);
+  background-image: url(icons/bubbles4.svg);
 }
+
 
 tab-bar-item#trending {
   background-image: url(icons/stats-dots.svg);
 }
 
 tab-bar-item#feed {
-  background-image: url(icons/feed2.svg);
+  background-image: url(icons/newspaper.svg);
 }
 
 tab-bar-item#profile {
-  background-image: url(icons/user.svg);
+  background-image: url(icons/share2.svg);
 }

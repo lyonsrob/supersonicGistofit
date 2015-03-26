@@ -34,7 +34,7 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	    })();
     }
     
-    steroids.view.navigationBar.show("Profile");
+    steroids.view.navigationBar.show("Share");
 
     $scope.pushLikes = function() {
 	var view = new supersonic.ui.View({

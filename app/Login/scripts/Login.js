@@ -17,7 +17,36 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 		animation: dismissAnimation
     	});
     }
-  
+    
+    var pushNotification;
+   
+    document.addEventListener("deviceready", function() {
+       pushNotification = window.plugins.pushNotification;
+    }); 
+   
+    $scope.checkLoginStatus = function() { 
+	    function errorHandler (error) {
+		    alert('error = ' + error);
+	    }
+
+	    function registrationHandler (deviceToken) {
+		    alert('deviceToken = ' + deviceToken);
+		    //save the deviceToken / registration ID to your Push Notification Server
+
+	    }
+
+	    pushNotification.register(
+			    registrationHandler,
+			    errorHandler, {
+			    //android options
+			    "senderID":"1234567891011",
+			    //ios options
+			    "badge":"true",
+			    "sound":"true",
+			    "alert":"true"
+			    }); 
+    }
+ 
     $scope.dismissLogin = function() {
 	steroids.initialView.dismiss({
 		animation: dismissAnimation

@@ -5,22 +5,22 @@ module.exports =
   # See styling options for tabs and other native components in app/common/native-styles/ios.css or app/common/native-styles/android.css
   tabs: [
     {
-      title: "Current"
-      id: "current"
-      location: "Current#current"
-    },
-    {
-      title: "Trending"
-      id: "trending"
-      location: "Trending#trending"
-    },
-    {
-      title: "Feed"
+      title: "Learn"
       id: "feed"
       location: "Feed#feed"
     },
     {
-      title: "Profile"
+      title: "Comment"
+      id: "current"
+      location: "Current#current"
+    },
+    #{
+    #  title: "Trending"
+    #  id: "trending"
+    #  location: "Trending#trending"
+    #},
+    {
+      title: "Share"
       id: "profile"
       location: "Profile#profile"
     },

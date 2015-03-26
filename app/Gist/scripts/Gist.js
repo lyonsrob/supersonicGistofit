@@ -55,13 +55,14 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     
     $scope.addGist = function(gist) {
         Gistofit.addGist($scope.url, gist, $scope.$storage.user.id);
-        supersonic.ui.tabs.select(0, {
+        supersonic.ui.tabs.select(1, {
 	  onSuccess:function(data){
 	    var message = {
-		  recipient: "currentView"
+	    	gist: gist
 	    }
+	
+	    supersonic.data.channel('add_gist').publish(message);
 	       
-	    window.postMessage(message);
             steroids.modal.hide();
 	  },
 	  onFailure:function(error){
