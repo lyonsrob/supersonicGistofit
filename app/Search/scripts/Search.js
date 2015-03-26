@@ -10,22 +10,23 @@ angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitServi
   function ($scope, Gistofit, $timeout) {
 
     $scope.$watch('search', function (value) {
-        Gistofit.searchTopUrls(value).then(function (response) {
-            $scope.results = toArrayObj(response.data);
-            var promises = []; 
+	if(value.length > 2) {
+		Gistofit.searchTopUrls(value).then(function (response) {
+		    $scope.results = toArrayObj(response.data);
 
-            angular.forEach($scope.results,function(result){
-               Gistofit.getExtract(result.url).then(function(data) {
-                        result.extract = data;
-			(function refreshGistCountForURL() {
-				Gistofit.getGistsCountForURL(result.url).then(function(response) {
-					result.gist_count = response.data;
-					//$timeout(refreshGistCountForURL, 1000);
-				});
-			})();
-                });
-            });
-         });
+		    angular.forEach($scope.results,function(result){
+		       Gistofit.getExtract(result.url).then(function(data) {
+				result.extract = data;
+				(function refreshGistCountForURL() {
+					Gistofit.getGistsCountForURL(result.url).then(function(response) {
+						result.gist_count = response.data;
+						//$timeout(refreshGistCountForURL, 1000);
+					});
+				})();
+			});
+		    });
+		 });
+	}
     });
 
     window.addEventListener("message", $scope.setAddData);
