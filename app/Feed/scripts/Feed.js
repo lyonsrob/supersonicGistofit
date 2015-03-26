@@ -79,6 +79,7 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
 
 supersonic.data.channel('add_gist').subscribe( function(message) {
 	$scope.feeds.splice($scope.selectedFeed, 1);
+	$scope.$apply();
 }); 
 
 }]);
