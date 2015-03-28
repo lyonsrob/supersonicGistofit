@@ -3,7 +3,8 @@ angular.module('gistOfItApp', [
 'angular-embedly',
 'ngTouch',
 'ngStorage',
-'mgcrea.pullToRefresh'
+'mgcrea.pullToRefresh',
+'angularMoment'
 ])
 .constant('pullToRefreshConfig', {
     treshold: 30,
@@ -119,6 +120,14 @@ var gaPlugin;
 function onDeviceReady() {
     gaPlugin = window.plugins.gaPlugin;
     gaPlugin.init(successHandler, errorHandler, "UA-53420229-1", 10);
+}
+
+function nativePluginResultHandler() {
+    return; 
+}
+
+function nativePluginErrorHandler() {
+    return; 
 }
 
 function successHandler() {

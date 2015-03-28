@@ -4,13 +4,14 @@
  ***********************************************************/
 
 navigation-bar {
-  background-color: #60ab00;
+  background-color: #5dac46;
   color: #ffffff;
+  letter-spacing: 200px;
 }
 
 navigation-bar title {
   color: #ffffff;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
 }
 
@@ -25,16 +26,16 @@ tab-bar {
 }
 
 tab-bar tab-bar-item {
-  font-family: "Avenir";
+  font-family: "Open Sans";
   font-size: 10px;
 }
 
 tab-bar tab-bar-item:selected {
-  color: #60ab00;
+  color: #5dac46;
 }
 
 tab-bar {
-  color: #60ab00;
+  color: #5dac46;
 }
 
 tab-bar-item#current {

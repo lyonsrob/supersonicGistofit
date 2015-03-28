@@ -66,6 +66,12 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 			setupLikes(gist);
 			setupComments(gist);
 		}
+
+		if (gist.user) {
+			Gistofit.getUser(gist.user.key.raw.id).then(function (response) {
+				angular.extend(gist.user, response.data);
+			});
+		}
             });
 
             $scope.cursor = response.data.nextCursor; 
@@ -90,13 +96,6 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 		});
 	}
     };
-
-function nativePluginResultHandler() {
-    return; 
-}
-function nativePluginErrorHandler() {
-    return; 
-}
   
    $scope.openURL = function(url) {
 	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", url, 1);

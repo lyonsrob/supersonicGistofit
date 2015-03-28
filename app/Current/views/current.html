@@ -1,5 +1,5 @@
 <div ng-controller="CurrentCtrl" id="Current">
-<div class="content overflow-scroll scroll">
+<div id="content" class="content overflow-scroll scroll">
   <ul pull-to-refresh="onReload()">
 		    <li ng-model="gists" ng-repeat="gist in gists | orderObjectBy:'date':true" class="repeat-animation list-group-item">
 			<div class="list card">
@@ -24,10 +24,14 @@
 				</button>
           		</div>
 
-			  <div class="item item-body">
-				<p>
-				      #gistofit: {{gist.content}}
-				</p>
+			  <div class="item">
+				  <div class="item item-avatar">
+				    <img ng-src="{{ gist.user.profilePicture }}">
+				    <p>
+					#gistofit: {{gist.content}}
+				    </p>
+			    	    <h4>by {{gist.user.firstName}} · <span am-time-ago="gist.date"></span></h4>
+				  </div>
 				
 				<img class="full-image" ng-src="{{ gist.extract.images[0].url }}" ng-click="openURL(gist.url.key.raw.name)" />
 			    <h2>

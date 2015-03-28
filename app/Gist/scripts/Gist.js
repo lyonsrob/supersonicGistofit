@@ -3,7 +3,20 @@
 angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
     $scope.$storage = $localStorage;
-    
+  
+     function postLike(gist) {
+//	steroids.addons.facebook.api('/me/gist_test:gist', {
+	steroids.addons.facebook.api('/me/feed', {
+	    //object: $scope.url,
+	    method: 'post',
+	    message: gist,
+	    permissions: ['publish_actions'],
+	    //privacy: {'value': 'SELF'} 
+	}).then(function(response) {
+	    console.log(response);
+	});
+  }
+ 
     supersonic.ui.views.current.params.onValue( function(values){
 	$scope.gists = {};
 	var url = values.url;
@@ -54,13 +67,16 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     }
     
     $scope.addGist = function(gist) {
-        Gistofit.addGist($scope.url, gist, $scope.$storage.user.id);
+        Gistofit.addGist($scope.url, gist, $scope.$storage.user.id).then(function(){
+		postLike(gist);	
+	});
+
         supersonic.ui.tabs.select(1, {
 	  onSuccess:function(data){
 	    var message = {
 	    	gist: gist
 	    }
-	
+
 	    supersonic.data.channel('add_gist').publish(message);
 	       
             steroids.modal.hide();

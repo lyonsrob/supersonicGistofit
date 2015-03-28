@@ -8,7 +8,6 @@ function toArrayObj(array) {
 
 angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitService', '$timeout', 
   function ($scope, Gistofit, $timeout) {
-
     $scope.$watch('search', function (value) {
 	if(value.length > 2) {
 		Gistofit.searchTopUrls(value).then(function (response) {

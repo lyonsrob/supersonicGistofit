@@ -8,6 +8,7 @@ function toArrayObj(array) {
 
 angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', 
   function ($scope, Gistofit, Feed) {
+  
     // Create a view
     var feedURLs = [
         'http://feeds2.feedburner.com/Mashable',
@@ -41,6 +42,9 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         for (var i = 0, len = feedURLs.length; i < len; i++) {
             Feed.parseFeed(feedURLs[i]).then(function(res){
                 angular.forEach(res.data.responseData.feed.entries,function(feed){
+		    var myRe = /http:\/\/www\.tmz\.com/g;
+
+		    feed.link = myRe.exec(feed.link) ? feed.link.replace(myRe, "http://m.tmz.com") : feed.link; 
                     Gistofit.getExtract(feed.link).then(function(data) {
                         feed.extract = data;
                     });
