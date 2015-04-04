@@ -17,7 +17,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 		animation: dismissAnimation
     	});
     }
-    
+  
     var pushNotification;
    
     document.addEventListener("deviceready", function() {
@@ -76,6 +76,10 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 			{
 				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name, picture.type(normal), likes' }).then(function(user) 
 					{
+						steroids.addons.facebook.getAccessToken().then(function(token) {
+							$scope.$storage.accessToken = token;
+						});
+
 						Gistofit.createUser({id: user.id, first_name: user.first_name, last_name: user.last_name, email: user.email, profile_picture: user.picture.data.url}).then(function(e) {
 							$scope.$storage.user = e.data;
 						});

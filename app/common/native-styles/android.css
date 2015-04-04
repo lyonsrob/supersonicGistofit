@@ -4,13 +4,13 @@
  ***********************************************************/
 
 navigation-bar {
-  background-color: #60ab00;
+  background-color: #5dac46;
   color: #ffffff;
 }
 
 navigation-bar title {
   color: #ffffff;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
 }
 
@@ -30,15 +30,15 @@ tab-bar tab-bar-item {
 }
 
 tab-bar tab-bar-item:selected {
-  color: #60ab00;
+  color: #5dac46;
 }
 
 tab-bar {
-  color: #60ab00;
+  color: #5dac46;
 }
 
 tab-bar-item#current {
-  background-image: url(icons/clock.svg);
+  background-image: url(icons/bubbles4.svg);
 }
 
 tab-bar-item#trending {
@@ -46,7 +46,7 @@ tab-bar-item#trending {
 }
 
 tab-bar-item#feed {
-  background-image: url(icons/feed2.svg);
+  background-image: url(icons/newspaper.svg);
 }
 
 tab-bar-item#profile {

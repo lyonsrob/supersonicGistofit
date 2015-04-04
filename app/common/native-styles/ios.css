@@ -6,7 +6,6 @@
 navigation-bar {
   background-color: #5dac46;
   color: #ffffff;
-  letter-spacing: 200px;
 }
 
 navigation-bar title {
@@ -52,5 +51,5 @@ tab-bar-item#feed {
 }
 
 tab-bar-item#profile {
-  background-image: url(icons/share2.svg);
+  background-image: url(icons/user.svg);
 }

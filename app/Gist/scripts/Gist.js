@@ -3,19 +3,34 @@
 angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
     $scope.$storage = $localStorage;
-  
-     function postLike(gist) {
-//	steroids.addons.facebook.api('/me/gist_test:gist', {
-	steroids.addons.facebook.api('/me/feed', {
-	    //object: $scope.url,
-	    method: 'post',
-	    message: gist,
-	    permissions: ['publish_actions'],
-	    //privacy: {'value': 'SELF'} 
+    $scope.fbToggle;
+
+    $scope.toggleActive = function($event) {
+      angular.element($event.currentTarget).toggleClass('toggled');
+      $scope.fbToggle = !$scope.fbToggle;
+    };
+    
+    $scope.checkFb = function() {
+	steroids.addons.facebook.api('/me/permissions', {
+		access_token: $scope.$storage.accessToken,
+		permissions: ["publish_actions"]
 	}).then(function(response) {
 	    console.log(response);
 	});
-  }
+    }
+    
+   
+     function postLike(gist) {
+	steroids.addons.facebook.api('/me/feed', {
+		method: 'post',
+		message: "#gistofit: " + gist.content,
+		link: "https://erudite-flag-623.appspot.com/gist/" + gist.id,
+		access_token: $scope.$storage.accessToken,
+		permissions: ["publish_actions"]
+	}).then(function() {
+	    console.log('Published link to feed!');
+	});
+     }
  
     supersonic.ui.views.current.params.onValue( function(values){
 	$scope.gists = {};
@@ -67,8 +82,10 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     }
     
     $scope.addGist = function(gist) {
-        Gistofit.addGist($scope.url, gist, $scope.$storage.user.id).then(function(){
-		postLike(gist);	
+        Gistofit.addGist($scope.url, gist, $scope.$storage.user.id).then(function(response){
+		if ($scope.fbToggle) {
+			postLike(response.data);	
+		}
 	});
 
         supersonic.ui.tabs.select(1, {
@@ -85,6 +102,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 	    supersonic.logger.log(error);
 	  }
 	});
+
     }
 
     window.addEventListener("message", $scope.setAddData);

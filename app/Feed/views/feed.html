@@ -13,7 +13,7 @@
               {{feed.extract.title}}
             </h2>
             <div ng-bind-html="feed.extract.video"></div>
-            <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" ng-click="openURL(feed.link)" />
+            <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" ng-click="openURL(feed.extract.url)" />
             <p>
               {{feed.extract.description}}
             </p>

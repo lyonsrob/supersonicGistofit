@@ -14,10 +14,13 @@
 	</div>
 	
 	<div class="button-bar">
-		<button class="button" onclick="window.plugins.socialsharing.shareViaFacebook('Message via Facebook', null /* img */, null /* url */, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})"
-			<i class="icon ion-social-facebook"></i> Share on Facebook
-		<button class="button" onclick="window.plugins.socialsharing.shareViaTwitter('Message via Twitter')">
-			<i class="icon ion-social-twitter"></i> Share on Twitter
+		<div style="padding: 10px; font-weight: bold; width: 55px; background-color: #71bc5b; color:white; text-align: center;">Share To:</div>
+
+        	<button class="button fb" ng-click="checkFb(); toggleActive($event)" >
+	     		<i class="icon super-social-facebook"></i> Facebook
+		</button>
+        	<button class="button tw" ng-click="toggleActive($event)" >
+	     		<i class="icon super-social-twitter"></i> Twitter
 		</button>
 	</div>
 	<div>

@@ -6,6 +6,17 @@ body {
    bottom: 0px;
 }
 
+.fb, .tw {
+    color: #b9b9b9;
+}
+
+.fb.toggled {
+    color: #3B5998;
+}
+.tw.toggled {
+    color: #55ACEE;
+}
+
 textarea {
    box-sizing: border-box;
    -webkit-box-sizing: border-box;

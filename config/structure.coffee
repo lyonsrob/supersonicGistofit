@@ -5,12 +5,12 @@ module.exports =
   # See styling options for tabs and other native components in app/common/native-styles/ios.css or app/common/native-styles/android.css
   tabs: [
     {
-      title: "Learn"
+      title: "Discover"
       id: "feed"
       location: "Feed#feed"
     },
     {
-      title: "Comment"
+      title: "Gists"
       id: "current"
       location: "Current#current"
     },
@@ -20,7 +20,7 @@ module.exports =
     #  location: "Trending#trending"
     #},
     {
-      title: "Share"
+      title: "Me"
       id: "profile"
       location: "Profile#profile"
     },
@@ -28,6 +28,10 @@ module.exports =
 
 ## Preloads
   preloads: [
+    {
+      id: "addGist"
+      location: "Gist#add"
+    },
     {
       id: "search"
       location: "Search#search",
@@ -41,15 +45,13 @@ module.exports =
       location: "Likes#likes"
     },
     {
-      id: "addGist"
-      location: "Gist#add"
-    },
-    {
       id: "viewGist"
       location: "Gist#view"
     }
   ]
     
+
+
 # Initial View
   initialView:
     id: "initialView"
