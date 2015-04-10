@@ -1,6 +1,6 @@
 <div ng-controller="FeedCtrl" id="Feed">
  <div id="content" class="content overflow-scroll scroll-content">
-  <ul >
+  <ul>
     <li ng-model="feeds" ng-repeat="feed in feeds" class="repeat-animation">
         <div class="list card">
 	  <div class="item item-avatar">
@@ -17,6 +17,7 @@
             <p>
               {{feed.extract.description}}
             </p>
+	    <a class="action" target="_blank" href="http://www.cnn.com/2015/04/06/middleeast/yemen-conflict-houthis-saudi-arabia/index.html">Read the article on {{ feed.extract.provider_display }} &gt;</a>
           </div>
            
           <button class="button button-full button-balanced" ng-click="showGistPrompt(feed, $index)"  >gist it</button>

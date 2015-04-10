@@ -99,11 +99,8 @@ steroids.on('ready', function() {
     );
 });
 
-steroids.view.setBackgroundImage({
-  image: "/img/background.jpg"
-});
+steroids.logger.log(steroids.view.location);
 
-    
 // Search view
 var searchView = new steroids.views.WebView({
     location: "http://localhost/views/Search/search.html",
@@ -135,12 +132,21 @@ steroids.view.navigationBar.update({
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
-var gaPlugin;
+var gaPlugin = {
+    "trackPage": function () {
+    },
+    "trackEvent": function () {
+    }
+};
 
 function onDeviceReady() {
     gaPlugin = window.plugins.gaPlugin;
     gaPlugin.init(successHandler, errorHandler, "UA-53420229-1", 10);
 }
+
+supersonic.ui.views.current.whenVisible( function() { 
+    gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, steroids.view.location);    
+});
 
 function nativePluginResultHandler() {
     return; 

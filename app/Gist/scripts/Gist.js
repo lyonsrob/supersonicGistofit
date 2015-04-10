@@ -4,10 +4,44 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
   function ($scope, $localStorage, Gistofit) {
     $scope.$storage = $localStorage;
     $scope.fbToggle;
+    $scope.twToggle;
+
+    var rightButton = new supersonic.ui.NavigationBarButton( {
+      title: "Submit",
+      onTap: function() {
+	  $scope.addGist($scope.gist);
+      }
+    });
+
+    var options = {
+       title: "#GistOfIt",
+       overrideBackButton: false,
+       buttons: {
+         right: [rightButton]
+       }
+    }
+
+    supersonic.ui.navigationBar.update(options);
+
+    var fb = document.getElementById('fb-button'),
+    tw = document.getElementById('tw-button');
 
     $scope.toggleActive = function($event) {
       angular.element($event.currentTarget).toggleClass('toggled');
-      $scope.fbToggle = !$scope.fbToggle;
+      
+      if ($event.currentTarget == fb) {
+      	$scope.fbToggle = !$scope.fbToggle;
+	if ($scope.fbToggle) {
+	   $scope.checkFb();
+	}
+      }
+      
+     if ($event.currentTarget == tw) {
+        $scope.twToggle = !$scope.twToggle;
+	if ($scope.twToggle) {
+	   $scope.checkTw();
+	}
+      }
     };
     
     $scope.checkFb = function() {
@@ -19,8 +53,27 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 	});
     }
     
+    $scope.checkTw = function() {
+	var provider = steroids.addons.oauthio.provider('twitter');
+	provider.auth().then(function() {
+		console.log("User is authed");
+	}).error(function(e) {
+		console.log("Something went wrong with the auth. Error message: " + e.message);
+	});
+    }
+
+    function postTw(gist) {
+	    var provider = steroids.addons.oauthio.provider('twitter');
+	    var postVars = encodeURIComponent("#gistofit: " + gist.content + " https://erudite-flag-623.appspot.com/gist/" + gist.id);
+		provider.api.post('/1.1/statuses/update.json?include_entities=true&status=' + postVars).then(JSON.parse).then(function(resp) {
+	    		supersonic.data.channel('toast').publish("Gist Posted to Twitter");
+			console.log(resp);
+		});
+    }
+
+    
    
-     function postLike(gist) {
+     function postFb(gist) {
 	steroids.addons.facebook.api('/me/feed', {
 		method: 'post',
 		message: "#gistofit: " + gist.content,
@@ -28,8 +81,11 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 		access_token: $scope.$storage.accessToken,
 		permissions: ["publish_actions"]
 	}).then(function() {
+	    supersonic.data.channel('toast').publish("Gist Posted to Facebook");
 	    console.log('Published link to feed!');
-	});
+	}, function(error) {
+    		supersonic.logger.error("something wrong...");
+  	});
      }
  
     supersonic.ui.views.current.params.onValue( function(values){
@@ -84,7 +140,10 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     $scope.addGist = function(gist) {
         Gistofit.addGist($scope.url, gist, $scope.$storage.user.id).then(function(response){
 		if ($scope.fbToggle) {
-			postLike(response.data);	
+			postFb(response.data);	
+		}
+		if ($scope.twToggle) {
+			postTw(response.data);	
 		}
 	});
 

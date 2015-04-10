@@ -9,6 +9,10 @@ function toArrayObj(array) {
 angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', 
   function ($scope, Gistofit, Feed) {
   
+    steroids.view.setBackgroundImage({
+      image: "/img/background.jpg"
+    });
+    
     // Create a view
     var feedURLs = [
         'http://feeds2.feedburner.com/Mashable',
@@ -42,12 +46,14 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         for (var i = 0, len = feedURLs.length; i < len; i++) {
             Feed.parseFeed(feedURLs[i]).then(function(res){
                 angular.forEach(res.data.responseData.feed.entries,function(feed){
-		    var myRe = /http:\/\/www\.tmz\.com/g;
+			var myRe = /http:\/\/www\.tmz\.com/g;
 
-		    feed.link = myRe.exec(feed.link) ? feed.link.replace(myRe, "http://m.tmz.com") : feed.link; 
-                    Gistofit.getExtract(feed.link).then(function(data) {
-                        feed.extract = data;
-                    });
+			feed.link = myRe.exec(feed.link) ? feed.link.replace(myRe, "http://m.tmz.com") : feed.link; 
+			gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "Feed", feed.link, 1);
+			Gistofit.getExtract(feed.link).then(function(data) {
+			  feed.extract = data;
+			  gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Provider", "View", data.provider_name, 1);
+			});
                 });
                 
                 $scope.feeds.push.apply($scope.feeds, res.data.responseData.feed.entries);
@@ -57,6 +63,7 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
     }
    
    $scope.openURL = function(url) {
+	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", url, 1);
         var ref = window.open(url, '_blank', 'location=yes');
    }
 
@@ -70,16 +77,18 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
        
         window.postMessage(message);
         
-        var createGistView = new steroids.views.WebView({
-            location: "http://localhost/views/Gist/add.html",
+	var createGistView = new supersonic.ui.View({
+            location: "Gist#add",
             id: "addGist"
-        });
+	});
 
-        steroids.modal.show(createGistView);
+        var fastSlide = new steroids.Animation({  transition: "slideFromBottom",  duration: .2});
+        supersonic.ui.layers.push(createGistView, { animation: fastSlide }); 
+        //steroids.modal.show(createGistView);
     }
     
     $scope.loadAllFeeds();
-    steroids.view.navigationBar.show("Learn");
+    steroids.view.navigationBar.show("Discover");
 
 supersonic.data.channel('add_gist').subscribe( function(message) {
 	$scope.feeds.splice($scope.selectedFeed, 1);

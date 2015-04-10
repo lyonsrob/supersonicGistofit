@@ -2,6 +2,9 @@
 
 angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorage', 'GistofitService', '$timeout', 
   function ($scope, $localStorage, Gistofit, $timeout) {
+    steroids.view.setBackgroundImage({
+      image: "/img/background.jpg"
+    });
     
     $scope.$storage = $localStorage;
 
@@ -34,7 +37,7 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	    })();
     }
     
-    steroids.view.navigationBar.show("Share");
+    steroids.view.navigationBar.show("Me");
 
     $scope.pushLikes = function() {
 	var view = new supersonic.ui.View({

@@ -1,12 +1,6 @@
-<div ng-controller="GistCtrl" id="Gist">
+<div ng-controller="GistCtrl" id="Gist" ng-cloak>
   <div class="">
-    <div class="bar bar-header">
-        <button class="button button-icon icon super-ios7-close-empty" onclick="steroids.modal.hide()"></button>
-        <div class="h1 title">#GistOfIt</div>
-        <button class="button button-clear button-positive" ng-click="addGist(gist);" >Submit</button>
-    </div>
-
-    <div class="has-header ionic-pseudo" style="position: relative;">
+    <div class="ionic-pseudo" style="position: relative;">
 	<div class="item item-avatar">
 		<img ng-src="{{ extract.images[0].url }}">
 		<h2>{{extract.title}}</h2>
@@ -16,10 +10,10 @@
 	<div class="button-bar">
 		<div style="padding: 10px; font-weight: bold; width: 55px; background-color: #71bc5b; color:white; text-align: center;">Share To:</div>
 
-        	<button class="button fb" ng-click="checkFb(); toggleActive($event)" >
+        	<button id="fb-button" class="button fb" ng-click="toggleActive($event)" >
 	     		<i class="icon super-social-facebook"></i> Facebook
 		</button>
-        	<button class="button tw" ng-click="toggleActive($event)" >
+        	<button id="tw-button" class="button tw" ng-click="toggleActive($event)" >
 	     		<i class="icon super-social-twitter"></i> Twitter
 		</button>
 	</div>

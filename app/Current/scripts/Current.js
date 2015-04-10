@@ -2,6 +2,9 @@
 
 angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', '$q', '$timeout', 
   function ($scope, supersonic, $localStorage, Gistofit, $q, $timeout) {
+    steroids.view.setBackgroundImage({
+      image: "/img/background.jpg"
+    });
 
   function setupLikes(gist) {
 	(function refreshLikeCount() {
@@ -22,6 +25,10 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 	})();
   }
  	
+  supersonic.data.channel('toast').subscribe( function(message) {
+	window.plugins.toast.showShortCenter(message);
+  });
+
   supersonic.data.channel('add_gist').subscribe( function(message) {
 	    var target = $("div.content");
 	 
@@ -48,31 +55,35 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 
     $scope.$storage = $localStorage;
 
+    function _initGist(gist) {
+	gist.date = Date.parse(gist.date);
+	$scope.gists[gist.id] = gist;
+	
+	if (gist.url) {
+		Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+			gist.extract = data;
+		});
+	}
+
+	if (gist.id) {
+		var label = "gist_" + gist.id; 
+		gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Gist", "Feed", label, 1);
+		setupLikes(gist);
+		setupComments(gist);
+	}
+
+	if (gist.user) {
+		Gistofit.getUser(gist.user.key.raw.id).then(function (response) {
+			angular.extend(gist.user, response.data);
+		});
+	}
+    }
+
     $scope.loadRecentGists = function() {
         Gistofit.getRecent().then(function (response) {
-	    angular.forEach(response.data.gists, function(g) {
-        	g.date = Date.parse(g.date);
-		$scope.gists[g.id] = g;
+	    angular.forEach(response.data.gists, function(gist) {
+		_initGist(gist);
 	    });
-
-            angular.forEach($scope.gists,function(gist){
-		if (gist.url) {
-			Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-				gist.extract = data;
-			});
-		}
-
-		if (gist.id) {
-			setupLikes(gist);
-			setupComments(gist);
-		}
-
-		if (gist.user) {
-			Gistofit.getUser(gist.user.key.raw.id).then(function (response) {
-				angular.extend(gist.user, response.data);
-			});
-		}
-            });
 
             $scope.cursor = response.data.nextCursor; 
             $scope.userServiceInfo = response.data.userServiceInfo;
@@ -107,16 +118,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
     	$scope.loading.busy = true;
         Gistofit.getRecent($scope.cursor).then(function (response) {
             angular.forEach(response.data.gists,function(gist){
-                Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-			gist.extract = data;
-		});
-
-                if (gist.id) {
-			setupLikes(gist);
-			setupComments(gist);
-		} 
-		gist.date = Date.parse(gist.date); 
-		$scope.gists[gist.id] = gist; 
+		_initGist(gist);
             });
 
             if (response.data.nextCursor != "")
@@ -131,31 +133,9 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
       setTimeout(function() {
         Gistofit.getNewest($scope.last_seen).then(function (response) {
             angular.forEach(response.data.gists,function(gist){
-		if (gist.url) {
-			Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-				gist.extract = data;
-			});
-		}
-
-		if (gist.id) {
-			(function refreshLikeCount() {
-			Gistofit.getLikes(gist.id).then(function(response) {
-				gist.likes = response.data.map;
-				gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-				$timeout(refreshLikeCount, 1000);
-			});
-			})();
-			(function refreshCommentCount() {
-				Gistofit.getComments(gist.id).then(function(response) {
-					gist.comments = response.data;
-					$timeout(refreshCommentCount, 1000);
-				});
-			})();
-		}
-                
-		gist.date = Date.parse(gist.date); 
-		$scope.gists[gist.id] = gist; 
+		_initGist(gist)
             });
+	    
 	    if (response.data.lastSeen) {
             	$scope.last_seen = response.data.lastSeen;
 	    }
@@ -167,30 +147,8 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
     };
     
     $scope.loadRecentGists();
-    steroids.view.navigationBar.show("Comment");
+    steroids.view.navigationBar.show("Gists");
     
-    $scope.showArticle = function(article) {
-        var articleView = new steroids.views.WebView({
-            location: "http://localhost/views/Article/article.html",
-            id: "article"
-        });
-
-        var message = {
-            recipient: "articleView",
-            article: article,
-        };
-        window.postMessage(message);
-        
-        var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
-
-        // Navigate to your view
-        steroids.layers.push(
-        {
-            view: articleView,
-            animation: fastSlide ,
-        });
-    };
-
     $scope.showComments = function(gist) {
 	var commentsView = new supersonic.ui.View({
             location: "Comments#comments",

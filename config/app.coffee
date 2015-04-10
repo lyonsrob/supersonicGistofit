@@ -26,6 +26,8 @@ module.exports =
   addons:
     facebook:
       enabled: true
+    oauthio:
+      publicKey: "zAnqPFkN2N1uGC6cv9BYzRNhHS0"
 
   watch:
     exclude: [".*"]

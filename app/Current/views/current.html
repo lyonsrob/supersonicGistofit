@@ -1,4 +1,4 @@
-<div ng-controller="CurrentCtrl" id="Current">
+<div ng-controller="CurrentCtrl" id="Current" ng-cloak>
 <div id="content" class="content overflow-scroll scroll">
  <ul pull-to-refresh="onReload()">
 		    <li ng-model="gists" ng-repeat="gist in gists | orderObjectBy:'date':true" class="repeat-animation list-group-item">

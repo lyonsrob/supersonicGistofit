@@ -6,10 +6,6 @@
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,400' rel='stylesheet' type='text/css'>
 
-  <!--link rel="stylesheet" href="/custom.css" />
-  <script src="/models/models.js"></script>
-  <link rel="stylesheet" href="/stylesheets/application.css" / -->
-
   <link rel="stylesheet" href="/components/supersonic/css/supersonic.css" />
   <link rel="stylesheet" href="/app/common/stylesheets/application.css" />
   <link rel="stylesheet" href="/components/angular-pull-to-refresh/dist/angular-pull-to-refresh.css"/>
@@ -20,18 +16,17 @@
   <script src="/components/steroids-js/steroids.js"></script>
 
   <script src="/components/angular/angular.min.js"></script>
-  <script src="/components/jquery/jquery.js"></script>
   <script src="/components/angular-touch/angular-touch.min.js"></script>
   <script src="/components/angular-pull-to-refresh/dist/angular-pull-to-refresh.js"></script>
   <script src="/components/ngstorage/ngStorage.min.js"></script>
   <script src="/components/moment/moment.js"></script>
   <script src="/components/angular-moment/angular-moment.js"></script>
   
-  
   <script src="/components/supersonic/supersonic.js"></script>
   <script src="/components/steroids-addons/index.js"></script>
   <script src="/components/lodash/dist/lodash.js"></script>
   
+  <script src="/components/jquery/jquery.js"></script>
   <script src="/components/webcomponentsjs/webcomponents.js"></script>
   <% _.each(yield.modules, function(module) { %>
   <script src="/app/<%= module %>.js"></script>
@@ -49,13 +44,6 @@
 </div>
 
   <%= yield.view %>
-  <script>
-    document.addEventListener("deviceready", logScreenHit, false);
-    function logScreenHit() {
-	gaPlugin.trackPage( nativePluginResultHandler, nativePluginErrorHandler, "<%= yield.viewName %>");
-    }
-  </script>
-
 <script>
   window.globalSpinner = {
     show: function() {

@@ -1,10 +1,20 @@
 <div ng-controller="LoginCtrl" id="Login">
  <div class="content">
       <h2>Facebook login status: {{ loginStatus }}</h2>
-
-  <button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
-  <button ng-click="dismissLogin()" class="button button-block button-balanced">Stay anonymous</button>
-  <button ng-click="checkLoginStatus()" class="button button-block button-balanced">Setup Push</button>
-
+	<div class="item" style="border:none;" >
+	  <img class="full-image" src="/img/logo.png" />
+	</div>
+	<div class="list list-inset">
+	<label class="item item-input">
+	  <input type="text" placeholder="First Name">
+	</label>
+	<label class="item item-input">
+	  <input type="text" placeholder="Last Name">
+	</label>	
+	</div>
+  	<div class="padding">
+	  <button ng-click="facebookLogin()" class="button button-block button-balanced">Log in with Facebook</button>
+	  <button ng-click="dismissLogin()" class="button button-block button-balanced">Stay anonymous</button>
+  	</div>
  </div>
 </div>
