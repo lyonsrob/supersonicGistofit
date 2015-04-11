@@ -19,9 +19,11 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
     }
   
     var pushNotification;
-   
+    var pushwoosh; 
+ 
     document.addEventListener("deviceready", function() {
        pushNotification = window.plugins.pushNotification;
+       pushwoosh = window.plugins.pushwoosh;
     
        function errorHandler (error) {
             supersonic.logger.log(error);
@@ -32,6 +34,8 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 	    //save the deviceToken / registration ID to your Push Notification Server
        } 
 
+       pushwoosh.onDeviceReady({pw_appid:"77A1C-B825E"});
+
        pushNotification.register(
 		    registrationHandler,
 		    errorHandler, {
@@ -41,7 +45,18 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 		    "badge":"true",
 		    "sound":"true",
 		    "alert":"true"
-		    }); 
+		    });
+
+       pushwoosh.registerDevice(
+        function(status) {
+            var deviceToken = status['deviceToken'];
+            console.warn('registerDevice: ' + deviceToken);
+        },
+        function(status) {
+            console.warn('failed to register : ' + JSON.stringify(status));
+            alert(JSON.stringify(['failed to register ', status]));
+        }
+      ); 
     }); 
    
     $scope.checkLoginStatus = function() { 
