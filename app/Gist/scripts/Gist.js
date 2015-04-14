@@ -64,7 +64,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 
     function postTw(gist) {
 	    var provider = steroids.addons.oauthio.provider('twitter');
-	    var postVars = encodeURIComponent("#gistofit: " + gist.content + " https://erudite-flag-623.appspot.com/gist/" + gist.id);
+	    var postVars = encodeURIComponent("#gistofit: " + gist.content + " http://gistof.it/gist/" + gist.id);
 		provider.api.post('/1.1/statuses/update.json?include_entities=true&status=' + postVars).then(JSON.parse).then(function(resp) {
 	    		supersonic.data.channel('toast').publish("Gist Posted to Twitter");
 			console.log(resp);
@@ -77,7 +77,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 	steroids.addons.facebook.api('/me/feed', {
 		method: 'post',
 		message: "#gistofit: " + gist.content,
-		link: "https://erudite-flag-623.appspot.com/gist/" + gist.id,
+		link: "http://www.gistof.it/gist/" + gist.id,
 		access_token: $scope.$storage.accessToken,
 		permissions: ["publish_actions"]
 	}).then(function() {
@@ -154,8 +154,8 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 	    }
 
 	    supersonic.data.channel('add_gist').publish(message);
-	       
-            steroids.modal.hide();
+	      
+            supersonic.ui.layers.pop(); 
 	  },
 	  onFailure:function(error){
 	    supersonic.logger.log(error);

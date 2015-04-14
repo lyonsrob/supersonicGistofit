@@ -46,6 +46,14 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	});
 	supersonic.ui.layers.push(view);		 
     }
+    
+    $scope.pushComments = function() {
+	var view = new supersonic.ui.View({
+	  location: "Comments#threads",
+	  id: "threads"
+	});
+	supersonic.ui.layers.push(view);		 
+    }
 
     $scope.addonsUndefined = steroids.addons === void 0;
     if (!$scope.addonsUndefined) {

@@ -8,7 +8,7 @@ function toArrayObj(array) {
 
 angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', 
   function ($scope, Gistofit, Feed) {
-  
+    
     steroids.view.setBackgroundImage({
       image: "/img/background.jpg"
     });
@@ -44,6 +44,8 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         var promises = [];
 
         for (var i = 0, len = feedURLs.length; i < len; i++) {
+	    var feed = new google.feeds.Feed("http://fastpshb.appspot.com/feed/1/fastpshb");
+	    feed.includeHistoricalEntries();
             Feed.parseFeed(feedURLs[i]).then(function(res){
                 angular.forEach(res.data.responseData.feed.entries,function(feed){
 			var myRe = /http:\/\/www\.tmz\.com/g;
@@ -62,9 +64,77 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         //shuffle($scope.feeds);
     }
    
-   $scope.openURL = function(url) {
+   $scope.openURL = function(feed, index) {
+	var url = feed.extract.url; 
+
 	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", url, 1);
-        var ref = window.open(url, '_blank', 'location=yes');
+        //var ref = window.open(url, '_blank', 'location=yes');
+	$scope.themeable = cordova.ThemeableBrowser.open(url, '_blank', {
+	    statusbar: {
+		color: '#ffffffff'
+	    },
+	    toolbar: {
+		height: 44,
+		color: '#f0f0f0ff'
+	    },
+	    title: {
+		color: '#003264ff',
+		showPageTitle: true
+	    },
+	    backButton: {
+		image: 'back',
+		imagePressed: 'back_pressed',
+		align: 'left',
+		event: 'backPressed'
+	    },
+	    forwardButton: {
+		image: 'forward',
+		imagePressed: 'forward_pressed',
+		align: 'left',
+		event: 'forwardPressed'
+	    },
+	    closeButton: {
+		image: 'close',
+		imagePressed: 'close_pressed',
+		align: 'left',
+		event: 'closePressed'
+	    },
+	    customButtons: [
+		{
+		    image: 'share',
+		    imagePressed: 'share_pressed',
+		    align: 'right',
+		    event: 'sharePressed'
+		}
+	    ],
+/*
+	    menu: {
+		image: 'menu',
+		imagePressed: 'menu_pressed',
+		title: 'Test',
+		cancel: 'Cancel',
+		align: 'right',
+		items: [
+		    {
+			event: 'helloPressed',
+			label: 'Hello World!'
+		    },
+		    {
+			event: 'testPressed',
+			label: 'Test!'
+		    }
+		]
+	    },
+*/
+	    backButtonCanClose: true
+	}).addEventListener('backPressed', function(e) {
+//	    alert('back pressed');
+	}).addEventListener('helloPressed', function(e) {
+//	    alert('hello pressed');
+	}).addEventListener('sharePressed', function(e) {
+$scope.themeable.close();
+$scope.showGistPrompt(feed, index);
+	});
    }
 
     $scope.showGistPrompt = function(feed, index) {

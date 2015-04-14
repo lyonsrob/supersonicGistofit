@@ -1,4 +1,10 @@
-<div ng-controller="FeedCtrl" id="Feed">
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+    google.load("feeds", "1");
+</script> 
+  
+
+<div ng-controller="FeedCtrl" id="Feed" ng-cloak>
  <div id="content" class="content overflow-scroll scroll-content">
   <ul>
     <li ng-model="feeds" ng-repeat="feed in feeds" class="repeat-animation">
@@ -13,7 +19,7 @@
               {{feed.extract.title}}
             </h2>
             <div ng-bind-html="feed.extract.video"></div>
-            <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" ng-click="openURL(feed.extract.url)" />
+            <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" ng-click="openURL(feed, $index)" />
             <p>
               {{feed.extract.description}}
             </p>
