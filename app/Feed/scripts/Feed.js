@@ -6,9 +6,10 @@ function toArrayObj(array) {
     return array;
 }
 
-angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', 
-  function ($scope, Gistofit, Feed) {
-    
+angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', '$q', '$timeout', '$filter', 
+  function ($scope, Gistofit, Feed, $q, $timeout, $filter) {
+    steroids.view.navigationBar.show("Discover");
+
     steroids.view.setBackgroundImage({
       image: "/img/background.jpg"
     });
@@ -39,31 +40,50 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
         });
     }
 
-    $scope.loadAllFeeds=function(e){      
-        $scope.feeds = [];
-        var promises = [];
+    $scope.feeds = [];
 
+    $scope.loadAllFeeds=function(e){     
         for (var i = 0, len = feedURLs.length; i < len; i++) {
-	    var feed = new google.feeds.Feed("http://fastpshb.appspot.com/feed/1/fastpshb");
-	    feed.includeHistoricalEntries();
             Feed.parseFeed(feedURLs[i]).then(function(res){
-                angular.forEach(res.data.responseData.feed.entries,function(feed){
+                angular.forEach(res.data.responseData.feed.entries,function(feed, index){
 			var myRe = /http:\/\/www\.tmz\.com/g;
-
 			feed.link = myRe.exec(feed.link) ? feed.link.replace(myRe, "http://m.tmz.com") : feed.link; 
+			
+			var idx = $filter('find')(feed, $scope.feeds);
+			if (idx === 1) {
+			  res.data.responseData.feed.entries.splice(index,1); 
+			  return;
+			}
+
 			gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "Feed", feed.link, 1);
 			Gistofit.getExtract(feed.link).then(function(data) {
 			  feed.extract = data;
 			  gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Provider", "View", data.provider_name, 1);
 			});
                 });
-                
-                $scope.feeds.push.apply($scope.feeds, res.data.responseData.feed.entries);
+		
+   	 	if (res.data.responseData.feed.entries.length > 0) {
+			$scope.feeds.unshift.apply($scope.feeds, res.data.responseData.feed.entries);
+		} 
             });
         }
-        //shuffle($scope.feeds);
     }
+  
+   document.addEventListener("deviceready", function() {
+	document.addEventListener("resume", onResume, false);
+   });
    
+   function onResume() {
+	$scope.$apply(function() {
+	   $scope.status = "loading";
+	});
+	document.getElementsByClassName("pull-to-refresh")[0].classList.add("no-margin");
+   	$scope.loadAllFeeds();
+	document.getElementsByClassName("pull-to-refresh")[0].classList.remove("no-margin");
+   }
+
+   $scope.loadAllFeeds();
+ 
    $scope.openURL = function(feed, index) {
 	var url = feed.extract.url; 
 
@@ -132,8 +152,8 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
 	}).addEventListener('helloPressed', function(e) {
 //	    alert('hello pressed');
 	}).addEventListener('sharePressed', function(e) {
-$scope.themeable.close();
-$scope.showGistPrompt(feed, index);
+	    $scope.themeable.close();
+	    $scope.showGistPrompt(feed, index);
 	});
    }
 
@@ -156,14 +176,20 @@ $scope.showGistPrompt(feed, index);
         supersonic.ui.layers.push(createGistView, { animation: fastSlide }); 
         //steroids.modal.show(createGistView);
     }
-    
-    $scope.loadAllFeeds();
-    steroids.view.navigationBar.show("Discover");
 
-supersonic.data.channel('add_gist').subscribe( function(message) {
-	$scope.feeds.splice($scope.selectedFeed, 1);
-	$scope.$apply();
-}); 
+    $scope.onReload = function() {
+	var deferred = $q.defer();
+	setTimeout(function() {
+		$scope.loadAllFeeds();
+		deferred.resolve(true);
+	}, 500);
+	return deferred.promise;
+     };
+
+     supersonic.data.channel('add_gist').subscribe( function(message) {
+		$scope.feeds.splice($scope.selectedFeed, 1);
+		$scope.$apply();
+     }); 
 
 }]);
 

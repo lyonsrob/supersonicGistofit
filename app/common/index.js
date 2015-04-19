@@ -23,21 +23,15 @@ angular.module('gistOfItApp', [
 .config(function(embedlyServiceProvider){
         embedlyServiceProvider.setKey('42f4925174814d68b90d0758d932fe14');
 })
-.filter('escape', function() {
-  return window.encodeURIComponent;
-})
-.filter('domain', function() {
-  return function(url) {
-   var matches,
-        output = "",
-        urls = /\w+:\/\/([\w|\.]+)/;
-
-    matches = urls.exec( url );
-
-    if ( matches !== null ) output = matches[1];
-
-    return output; 
-  };
+.filter('find', function(){
+  return function(feed, feeds) {
+    for (var index in feeds) {
+      if (feeds[index].link == feed.link) {
+        return 1;
+      }
+    }
+    return 0;
+  }
 })
 .filter('orderObjectBy', function() {
   return function(items, field, reverse) {
@@ -133,15 +127,17 @@ steroids.view.navigationBar.update({
 document.addEventListener("deviceready", onDeviceReady, false);
 
 var gaPlugin = {
-    "trackPage": function () {
-    },
-    "trackEvent": function () {
-    }
-};
+	    "trackPage": function () {
+	    },
+	    "trackEvent": function () {
+	    }
+	};
 
 function onDeviceReady() {
-    gaPlugin = window.plugins.gaPlugin;
-    gaPlugin.init(successHandler, errorHandler, "UA-53420229-1", 10);
+    if (window.plugins.gaPlugin) {
+      gaPlugin = window.plugins.gaPlugin;
+      gaPlugin.init(successHandler, errorHandler, "UA-53420229-1", 10);
+    }
 }
 
 supersonic.ui.views.current.whenVisible( function() { 

@@ -142,7 +142,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
           });
         deferred.resolve(true);
     	$scope.$apply()
-      }, 1000);
+      }, 500);
       return deferred.promise;
     };
     

@@ -1,7 +1,7 @@
 <div ng-controller="CurrentCtrl" id="Current" ng-cloak>
 <div id="content" class="content overflow-scroll scroll">
  <ul pull-to-refresh="onReload()">
-		    <li ng-model="gists" ng-repeat="gist in gists | orderObjectBy:'date':true" class="repeat-animation list-group-item">
+		    <li ng-model="gists" ng-repeat="gist in gists | orderObjectBy:'date':true" class="list-group-item">
 			<div class="list card">
 				  <div class="item item-avatar" style="border:none;">
 				    <img ng-src="{{ gist.user.profilePicture }}">

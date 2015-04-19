@@ -29,6 +29,10 @@ module.exports =
 ## Preloads
   preloads: [
     {
+      id: "root"
+      location: "Root#root"
+    },
+    {
       id: "addGist"
       location: "Gist#add"
     },

@@ -1,16 +1,10 @@
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">
-    google.load("feeds", "1");
-</script> 
-  
-
 <div ng-controller="FeedCtrl" id="Feed" ng-cloak>
  <div id="content" class="content overflow-scroll scroll-content">
-  <ul>
-    <li ng-model="feeds" ng-repeat="feed in feeds" class="repeat-animation">
+  <ul id="feed-list" pull-to-refresh="onReload()">
+    <li ng-model="feeds" ng-repeat="feed in feeds" class="list-group-item">
         <div class="list card">
 	  <div class="item item-avatar">
-	    <img ng-src="{{ feed.extract.favicon_url }}">
+	    <img width="16px" height="16px" ng-src="{{ feed.extract.favicon_url }}">
 	    <h2>via {{feed.extract.provider_name}}</h2>
 	  </div>
 
