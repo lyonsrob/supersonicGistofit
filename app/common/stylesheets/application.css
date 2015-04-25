@@ -6,6 +6,10 @@ body {
    bottom: 0px;
 }
 
+.item-body h2
+{
+    margin-top: 0px !important;
+}
 .fb, .tw {
     color: #b9b9b9;
 }

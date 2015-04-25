@@ -56,7 +56,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
     $scope.$storage = $localStorage;
 
     function _initGist(gist) {
-	gist.date = Date.parse(gist.date);
+	gist.date = Date.parse(gist.date + " GMT");
 	$scope.gists[gist.id] = gist;
 	
 	if (gist.url) {

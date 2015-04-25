@@ -94,7 +94,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     	if (url) {
 		Gistofit.getGistsForURL(url).then(function(response) {
 		    angular.forEach(response.data.gists, function(g) {
-			g.date = Date.parse(g.date);
+			g.date = Date.parse(g.date + " GMT");
 			$scope.gists[g.id] = g;
 		    });
 

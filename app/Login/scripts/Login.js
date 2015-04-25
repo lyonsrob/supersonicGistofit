@@ -98,7 +98,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
       };
     
    if ($scope.$storage.user.id) {
-	$scope.facebookLogin();
+//	$scope.facebookLogin();
 	//steroids.initialView.dismiss({
 	//	animation: dismissAnimation
     	//});

@@ -9,10 +9,12 @@
 			    	    <img style="vertical-align: middle;" src="{{ gist.extract.favicon_url }}" width="16px" height="16px" /><h5 style="display:inline; vertical-align:middle;"> via {{gist.extract.provider_name}}</h5>
 				  </div>
 				
-		    <p style="padding: 0 15px; white-space: wrap !important">
-			#gistofit: {{gist.content}}
-		    </p>
-          		<div class="button-bar">
+			<div class="item item-body" style="border:none;" >
+			    <h2 style="white-space: wrap !important">
+				#gistofit: {{gist.content}}
+			    </h2>
+			</div>
+          		<div class="padding-left">
 				 <button ng-click="likeGist(gist.id)" class="button button-small button-clear button-balanced icon super-heart" ng-disabled="gist.userLiked"> 
 					<ng-pluralize count="gist.likes.total"
 						 when="{'0': ' No Likes',
@@ -20,7 +22,7 @@
 						     'other': ' {{gist.likes.total}} Likes'}">
 					</ng-pluralize>	
 				</button>
-      				 <button class="button button-small button-clear button-balanced icon super-chatbubble" ng-click="showComments(gist)"> 
+      				 <button class="padding-left button button-small button-clear button-balanced icon super-chatbubble" ng-click="showComments(gist)"> 
 					<ng-pluralize count="gist.comments.length"
 						 when="{'0': ' No Comments',
 						     '1': ' 1 Comment',
