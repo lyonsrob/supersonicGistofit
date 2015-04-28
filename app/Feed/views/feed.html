@@ -1,14 +1,14 @@
 <div ng-controller="FeedCtrl" id="Feed" ng-cloak>
  <div id="content" class="content overflow-scroll scroll-content">
   <ul id="feed-list" pull-to-refresh="onReload()">
-    <li ng-model="feeds" ng-repeat="feed in feeds" class="list-group-item">
+    <li ng-model="feeds" ng-repeat="feed in feeds| orderObjectBy:'publishedDate':true" class="list-group-item">
         <div class="list card">
 	  <div class="item item-avatar">
 	    <img ng-src="{{ feed.extract.favicon_url }}">
             <h3 style="overflow: initial; text-overflow: initial; white-space: initial;">
               {{feed.extract.title}}
             </h3>
-	    <h4>via {{feed.extract.provider_name}}</h4>
+	    <h4>via {{feed.extract.provider_name}} · <span am-time-ago="feed.publishedDate"></span></h4>
 	  </div>
 
           <div class="item item-body">

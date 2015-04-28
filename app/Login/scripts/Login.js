@@ -11,7 +11,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
     $scope.$storage = $localStorage.$default({
     	user: {}
     });
-    
+
     var pushNotification;
     var pushwoosh; 
  
@@ -48,11 +48,11 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
         },
         function(status) {
             console.warn('failed to register : ' + JSON.stringify(status));
-            alert(JSON.stringify(['failed to register ', status]));
+	    setTimeout(function(){ alert(JSON.stringify(['failed to register ', status])); }, 1);
         }
       ); 
     }); 
-   
+    
     $scope.checkLoginStatus = function() { 
     }
 
@@ -78,10 +78,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 						});
 					
 						return $scope.$apply(function() {
-							steroids.initialView.dismiss({
-							  animation: dismissAnimation
-							});
-						
+							supersonic.ui.initialView.dismiss()
 							return $scope.loginStatus = true;
 						});
 					});
@@ -99,9 +96,9 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
     
    if ($scope.$storage.user.id) {
 //	$scope.facebookLogin();
-	//steroids.initialView.dismiss({
-	//	animation: dismissAnimation
-    	//});
+	steroids.initialView.dismiss({
+		animation: dismissAnimation
+    	});
     }
     
     $scope.addonsUndefined = steroids.addons === void 0;
@@ -111,6 +108,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
       $scope.firstName = "Not fetched yet.";
 
       steroids.addons.facebook.ready.then(function() {
+        $scope.ready = true;
         return steroids.addons.facebook.getLoginStatus().then(function(response) {
           return $scope.$apply(function() {
             if ($scope.loginStatus = response.status === 'connected') {

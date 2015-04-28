@@ -2,7 +2,7 @@
  <div class="content" when-scrolled="myPagingFunction()">
   <div class="list">
   <ul>
-    <li ng-model="gists" ng-repeat="gist in gists" class="repeat-animation">
+    <li ng-model="gists" ng-repeat="gist in gists" class="">
 	 <a class="item item-thumbnail-left" href="#">
 	      <img ng-src="{{ gist.extract.images[0].url }}" />
 	      <h2>{{gist.extract.title}}</h2>

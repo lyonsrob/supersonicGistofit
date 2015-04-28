@@ -17,7 +17,7 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
     // Create a view
     var feedURLs = [
         'http://feeds2.feedburner.com/Mashable',
-        'http://www.tmz.com/rss.xml',
+        'http://dlisted.com/feed/rdf/',
         'http://feeds.gawker.com/deadspin/full',
         'http://feeds.gawker.com/gizmodo/full',
         'http://feeds2.feedburner.com/businessinsider',
@@ -190,7 +190,6 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
 		$scope.feeds.splice($scope.selectedFeed, 1);
 		$scope.$apply();
      }); 
-
 }]);
 
 angular.module('gistOfItApp').factory('FeedService',['$http',function($http){

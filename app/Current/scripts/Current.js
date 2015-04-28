@@ -102,9 +102,10 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
    $scope.likeGist = function(id) {
 	if (id) {
 		Gistofit.likeGist(id, $scope.$storage.user).then(function (response) {
-			$scope.gists[id].userLiked = 1;	
-			$scope.gists[id].likes.total++;	
+			return true;
 		});
+		$scope.gists[id].userLiked = 1;	
+		$scope.gists[id].likes.total++;	
 	}
     };
   
