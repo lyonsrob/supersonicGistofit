@@ -12,11 +12,11 @@
 	      <a class="item item-thumbnail-left" ng-tap="loadGists()" style="min-height: initial">
 		      <img ng-src="{{ result.extract.images[0].url }}" />
 		      <img style="vertical-align: middle;" src="{{ result.extract.favicon_url }}" width="16px" height="16px" /><h4 style="display:inline; vertical-align:middle;"> via {{result.extract.provider_name}} · 
-				<ng-pluralize count="result.gist_count"
+				<span class="balanced"><strong><ng-pluralize count="result.gist_count"
 					 when="{'0': 'No Gists',
 					     '1': '1 Gist',
 					     'other': '{{result.gist_count}} Gists'}">
-				</ng-pluralize>
+				</ng-pluralize></strong></span>
 			</h4>	
 		      <h2>{{result.extract.title}}</h2>
 		      <p>{{result.extract.description}}</p>

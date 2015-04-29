@@ -87,39 +87,62 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     		supersonic.logger.error("something wrong...");
   	});
      }
+  
+   function setupLikes(gist) {
+	(function refreshLikeCount() {
+		Gistofit.getLikes(gist.id).then(function(response) {
+			gist.likes = response.data.map;
+			gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
+			//$timeout(refreshLikeCount, 1000);
+		});
+	})();
+  }
+  
+  function setupComments(gist) {
+	(function refreshCommentCount() {
+		Gistofit.getComments(gist.id).then(function(response) {
+			gist.comments = response.data;
+			//$timeout(refreshCommentCount, 1000);
+		});
+	})();
+  }
+    
+    function _initGist(gist) {
+	gist.date = Date.parse(gist.date + " GMT");
+	$scope.gists[gist.id] = gist;
+
+	gist.extract = $scope.extract; 
+	
+	if (gist.url && !gist.extract) {
+		Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
+			gist.extract = $scope.extract = data;
+		});
+	}
+
+	if (gist.id) {
+		var label = "gist_" + gist.id; 
+		gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Gist", "Feed", label, 1);
+		setupLikes(gist);
+		setupComments(gist);
+	}
+
+	if (gist.user) {
+		Gistofit.getUser(gist.user.key.raw.id).then(function (response) {
+			angular.extend(gist.user, response.data);
+		});
+	}
+    }
+    $scope.loading = {'busy': false};
  
     supersonic.ui.views.current.params.onValue( function(values){
-	$scope.gists = {};
-	var url = values.url;
+        $scope.gists = {};
+        $scope.extract = null;
+
+	var url = $scope.url = values.url;
     	if (url) {
 		Gistofit.getGistsForURL(url).then(function(response) {
-		    angular.forEach(response.data.gists, function(g) {
-			g.date = Date.parse(g.date + " GMT");
-			$scope.gists[g.id] = g;
-		    });
-
-		    angular.forEach($scope.gists,function(gist){
-			if (gist.url) {
-				Gistofit.getExtract(gist.url.key.raw.name).then(function(data) {
-					gist.extract = data;
-				});
-			}
-
-			if (gist.id) {
-				(function refreshLikeCount() {
-				Gistofit.getLikes(gist.id).then(function(response) {
-					gist.likes = response.data.map;
-					gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-					$timeout(refreshLikeCount, 1000);
-				});
-				})();
-				(function refreshCommentCount() {
-					Gistofit.getComments(gist.id).then(function(response) {
-						gist.comments = response.data;
-						$timeout(refreshCommentCount, 1000);
-					});
-				})();
-			}
+		    angular.forEach(response.data.gists, function(gist) {
+			_initGist(gist);
 		    });
 
 		    $scope.cursor = response.data.nextCursor; 
@@ -165,6 +188,20 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
     }
 
     window.addEventListener("message", $scope.setAddData);
+    
+    $scope.myPagingFunction = function () {
+	if ($scope.loading.busy) return;
+    	$scope.loading.busy = true;
+        Gistofit.getGistsForURL($scope.url, $scope.cursor).then(function (response) {
+            angular.forEach(response.data.gists,function(gist){
+		_initGist(gist);
+            });
+
+            if (response.data.nextCursor != "")
+                $scope.cursor = response.data.nextCursor; 
+            $scope.loading.busy = false;
+	 });
+    };
 
 }    
 ]);

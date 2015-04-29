@@ -1,7 +1,7 @@
 angular.module('gistOfItApp', [
 'supersonic',
 'angular-embedly',
-//'ngTouch',
+'ngTouch',
 'ngStorage',
 'mgcrea.pullToRefresh',
 'angularMoment'
@@ -50,7 +50,6 @@ angular.module('gistOfItApp', [
     if(reverse) filtered.reverse();
     return filtered;
   };
-/*
 })
 .directive('ngTap', function() {
   return function(scope, element, attrs) {
@@ -71,7 +70,6 @@ angular.module('gistOfItApp', [
       }
     });
   };
-*/
 });
 
 steroids.on('ready', function() {

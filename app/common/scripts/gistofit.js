@@ -96,10 +96,10 @@ angular.module("gistOfItApp").factory('GistofitService', ['$http', 'embedlyServi
         var url = buildURL('/url/'+ escapedUrl + '/extract'); 
         return $http({method: 'POST', url: url, data: data, headers: {'Content-Type': 'text/plain'}});
     };
-    Gistofit.getGistsForURL = function (inputUrl) {
+    Gistofit.getGistsForURL = function (inputUrl, cursor) {
         var escapedUrl = encodeURIComponent(inputUrl);
         var url = buildURL('/gist/url/' + escapedUrl); 
-        return $http({method: 'GET', url: url});
+        return $http({method: 'GET', url: url, params: {cursor: cursor}});
     };
 
     Gistofit.getGistsCountForURL = function (inputUrl) {
