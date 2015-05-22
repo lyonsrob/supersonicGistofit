@@ -8,6 +8,9 @@ function toArrayObj(array) {
 
 angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitService', '$timeout', 
   function ($scope, Gistofit, $timeout) {
+    steroids.view.setBackgroundImage({
+      image: "/img/background.jpg"
+    });
     $scope.$watch('search', function (value) {
 	if(value && value.length > 2) {
 		Gistofit.searchTopUrls(value).then(function (response) {
@@ -29,6 +32,5 @@ angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitServi
     });
 
     window.addEventListener("message", $scope.setAddData);
-    steroids.view.navigationBar.show("Search");
 
 }]);

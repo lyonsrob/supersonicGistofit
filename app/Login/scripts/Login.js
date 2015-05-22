@@ -96,9 +96,9 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
     
    if ($scope.$storage.user.id) {
 //	$scope.facebookLogin();
-	steroids.initialView.dismiss({
-		animation: dismissAnimation
-    	});
+//	steroids.initialView.dismiss({
+//		animation: dismissAnimation
+//    	});
     }
     
     $scope.addonsUndefined = steroids.addons === void 0;

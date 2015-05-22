@@ -17,8 +17,18 @@ body {
 .fb.toggled {
     color: #3B5998;
 }
+
+.facebook {
+    background-color: #3B5998;
+    color: white; 
+}
+
 .tw.toggled {
     color: #55ACEE;
+}
+
+input, textarea {
+  -webkit-user-select: text;  /* Allow selection for input elements */
 }
 
 textarea {

@@ -12,6 +12,10 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	$scope.facebookLogout();
     	$localStorage.$reset();
     }
+    
+    $scope.loadInitialView = function () {
+    	supersonic.ui.initialView.show();
+    }
 
 
     if ($scope.$storage.user.id) {

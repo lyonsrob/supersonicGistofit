@@ -1,3 +1,10 @@
+<super-navbar>
+  <label class="item-input-wrapper">
+    <i class="icon super-ios7-search placeholder-icon"></i>
+    <input type="search" placeholder="Search">
+  </label>
+</super-navbar>
+
 <div ng-controller="SearchCtrl" id="Search">
     <div class="content overflow-scroll scroll">
     <div class="list">
@@ -9,7 +16,7 @@
 	<super-navigate ng-model="results" ng-repeat="result in results" view-id="viewGist" ng-attr-data-params-url="{{result.url}}">
 	<li>
 	    <div class="list card">
-	      <a class="item item-thumbnail-left" ng-tap="loadGists()" style="min-height: initial">
+	      <a class="item item-thumbnail-left" ng-tap="result.gist_count ? loadGists() : openURL(result.url)" style="min-height: initial">
 		      <img ng-src="{{ result.extract.images[0].url }}" />
 		      <img style="vertical-align: middle;" src="{{ result.extract.favicon_url }}" width="16px" height="16px" /><h4 style="display:inline; vertical-align:middle;"> via {{result.extract.provider_name}} · 
 				<span class="balanced"><strong><ng-pluralize count="result.gist_count"

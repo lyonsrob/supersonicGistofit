@@ -98,26 +98,15 @@ steroids.on('ready', function() {
 
 steroids.logger.log(steroids.view.location);
 
-// Search view
-var searchView = new steroids.views.WebView({
-    location: "http://localhost/views/Search/search.html",
-    id: "search"
-});
-   
 var searchButton = new steroids.buttons.NavigationBarButton();
 searchButton.imagePath = "/icons/search@2x.png";
 
 steroids.logger.log("Setting up onTap for searchButton");
 
 searchButton.onTap = function() { 
-    var fastSlide = new steroids.Animation({  transition: "slideFromRight",  duration: .2});
-
-    // Navigate to your view
-    steroids.layers.push(
-    {
-        view: searchView,
-        animation: fastSlide
-    });
+	supersonic.ui.views.find("search").then( function(startedView) {
+	  supersonic.ui.layers.push(startedView);
+	});
 };
 
 steroids.view.navigationBar.update({

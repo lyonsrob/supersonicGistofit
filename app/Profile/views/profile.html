@@ -2,10 +2,9 @@
 .profile-card {
   width: 100%;
   text-align: center;
-  color: white;
+  color: #333332;
   padding: 30px 0;
   line-height: 1.4;
-  background-color: #33393c;
   text-shadow: rgba(0, 0, 0, 0.4) 0px 1px 0px;
 }
 
@@ -48,7 +47,7 @@
 		<div class="profile-name">{{ $storage.user.firstName }} {{ $storage.user.lastName }}</div>
 
 		<button ng-show="$storage.user.id" ng-click="logout()" class="button button-small button-balanced">Logout</button>
-		<button ng-show="!$storage.user.id" ng-click="facebookLogin()" class="button button-small button-balanced">Log in with Facebook</button>
+		<button ng-show="!$storage.user.id" ng-click="loadInitialView()" class="button button-small button-balanced">Log in</button>
 	</div>
 
 	<div class="list" ng-show="$storage.user.id">
@@ -56,18 +55,18 @@
 	  <a class="item item-icon-left" ng-click="pushGists()">
 	    <i class="icon super-social-google"></i>
 	    Gists
-	    <span class="badge badge-positive">{{gistCount || 0}}</span>
+	    <span class="badge badge-balanced">{{gistCount || 0}}</span>
 	  </a>
 	  
 	  <a class="item item-icon-left" ng-click="pushLikes()">
 	    <i class="icon super-heart"></i>
 	    Likes 
-	    <span class="badge badge-positive">{{likeCount || 0}}</span>
+	    <span class="badge badge-balanced">{{likeCount || 0}}</span>
 	  </a>
 	  <a class="item item-icon-left" ng-click="pushComments()">
 	    <i class="icon super-reply"></i>
 	    Comments 
-	    <span class="badge badge-positive">{{commentCount || 0}}
+	    <span class="badge badge-balanced">{{commentCount || 0}}
 	    </span>
 	  </a>
 	<div class="item item-divider">

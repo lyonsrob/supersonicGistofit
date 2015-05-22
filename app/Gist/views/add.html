@@ -1,7 +1,7 @@
 <div ng-controller="GistCtrl" id="Gist" ng-cloak>
   <div class="">
     <div class="ionic-pseudo" style="position: relative;">
-	<div class="item item-avatar">
+	<div class="item item-avatar item-text-wrap">
 		<img ng-src="{{ extract.images[0].url }}">
 		<h2>{{extract.title}}</h2>
 		<p>via {{ extract.provider_name}}</p>
@@ -17,7 +17,7 @@
 	</div>
 	<div>
 		<label class="item item-input" >
-		    <textarea autofocus placeholder="What was the gist?" rows="100%" cols="100%" ng-model="gist" name="gist" id="gist"></textarea>
+		    <textarea placeholder="What was the gist?" ng-model="gist" name="gist" id="gist" style="height:200px; margin:25px 15px 25px 0"></textarea>
 		</label>
 	</div>
     </div>
