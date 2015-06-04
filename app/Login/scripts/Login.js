@@ -94,13 +94,6 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
         });
       };
     
-   if ($scope.$storage.user.id) {
-//	$scope.facebookLogin();
-//	steroids.initialView.dismiss({
-//		animation: dismissAnimation
-//    	});
-    }
-    
     $scope.addonsUndefined = steroids.addons === void 0;
     if (!$scope.addonsUndefined) {
       $scope.ready = false;
@@ -112,7 +105,9 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
         return steroids.addons.facebook.getLoginStatus().then(function(response) {
           return $scope.$apply(function() {
             if ($scope.loginStatus = response.status === 'connected') {
-	    	return $scope.facebookGraphQuery();
+		return steroids.initialView.dismiss({
+			animation: dismissAnimation
+		});
 	    }
           });
         });

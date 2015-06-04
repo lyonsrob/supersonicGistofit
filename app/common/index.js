@@ -47,6 +47,17 @@ angular.module('gistOfItApp', [
       if(a[field] < b[field]) return -1;
       return 0;
     });
+
+    if(typeof items.sort === 'function') {
+      items.sort(function (a, b) {
+        if(a[field] > b[field]) return 1;
+        if(a[field] < b[field]) return -1;
+        return 0;
+      });
+      
+      if(reverse) items.reverse();
+    }
+    
     if(reverse) filtered.reverse();
     return filtered;
   };
