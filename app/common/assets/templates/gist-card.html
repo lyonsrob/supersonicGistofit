@@ -1,0 +1,40 @@
+			<div class="list card">
+				  <div class="item item-avatar" style="border:none;">
+				    <img ng-src="{{ gist.user.profilePicture }}">
+			    	    <h4>by {{gist.user.firstName}} &#183; <span am-time-ago="gist.date"></span></h4>
+			    	    <img style="vertical-align: middle;" ng-src="{{ gist.extract.favicon_url }}" width="16px" height="16px" /><h5 style="display:inline; vertical-align:middle;"> via {{gist.extract.provider_name}}</h5>
+				  </div>
+				
+			<div class="item item-body item-text-wrap" style="border:none;" >
+			    <h2>
+				#GistOfIt: {{gist.content}}
+			    </h2>
+			</div>
+          		<div class="padding-left">
+				 <button ng-click="likeGist(gist.id)" class="button button-small button-clear button-balanced icon super-heart" ng-disabled="gist.userLiked"> 
+					<ng-pluralize count="gist.likes.total"
+						 when="{'0': ' No Likes',
+						     '1': ' 1 Like',
+						     'other': ' {{gist.likes.total}} Likes'}">
+					</ng-pluralize>	
+				</button>
+      				 <button class="padding-left button button-small button-clear button-balanced icon super-chatbubble" ng-click="showComments(gist)"> 
+					<ng-pluralize count="gist.comments.length"
+						 when="{'0': ' No Comments',
+						     '1': ' 1 Comment',
+						     'other': ' {{gist.comments.length}} Comments'}">
+					</ng-pluralize>	
+				</button>
+          		</div>
+
+			  <div class="item" style="border:none;" >
+				<img class="full-image" ng-src="{{ gist.extract.images[0].url }}" ng-open-themeable-browser url="{{gist.url.key.raw.name}}" />
+			    <h2>
+			      {{gist.extract.title}}
+			    </h2>
+			    <div class="description">
+			    <p>
+			      {{gist.extract.description}}
+			    </p>
+			    </div>
+			  </div>

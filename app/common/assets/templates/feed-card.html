@@ -1,0 +1,23 @@
+        <div class="list card">
+	 <div ng-click="openURL(feed, $index)">
+		  <div class="item item-avatar item-text-wrap">
+		    <img ng-src="{{ feed.extract.favicon_url }}">
+		    <h3>
+		      {{feed.extract.title}}
+		    </h3>
+		    <h4>via {{feed.extract.provider_name}} &#183; <span am-time-ago="feed.publishedDate"></span></h4>
+		  </div>
+
+		  <div class="item item-body">
+		    <div ng-bind-html="feed.extract.video"></div>
+		    <img class="full-image" ng-src="{{ feed.extract.images[0].url }}" />
+		    <p>
+		      {{feed.extract.description}}
+		    </p>
+		  </div>
+          </div>
+	  <div class="padding"> 
+          	<button class="button button-block button-balanced" ng-click="showGistPrompt(feed, $index)"  >gist it</button>
+	  </div>
+        </div>
+

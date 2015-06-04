@@ -1,5 +1,12 @@
 'use strict'
 
+angular.module('gistOfItApp').directive('gistCard', function() {
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/gist-card.html'
+  };
+});
+
 angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic', '$localStorage', 'GistofitService', '$q', '$timeout', 
   function ($scope, supersonic, $localStorage, Gistofit, $q, $timeout) {
     steroids.view.setBackgroundImage({
@@ -19,7 +26,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
   function setupComments(gist) {
 	(function refreshCommentCount() {
 		Gistofit.getComments(gist.id).then(function(response) {
-			gist.comments = response.data;
+			gist.comments = response.data.comments;
 			//$timeout(refreshCommentCount, 1000);
 		});
 	})();

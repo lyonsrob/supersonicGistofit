@@ -6,6 +6,13 @@ function toArrayObj(array) {
     return array;
 }
 
+angular.module('gistOfItApp').directive('feedCard', function() {
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/feed-card.html'
+  };
+});
+
 angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService', 'FeedService', '$q', '$timeout', '$filter', 
   function ($scope, Gistofit, Feed, $q, $timeout, $filter) {
     steroids.view.navigationBar.show("Discover");
