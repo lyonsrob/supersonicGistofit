@@ -40,7 +40,7 @@
 }
 </style >
 
-<div ng-controller="ProfileCtrl" id="Profile">
+<div ng-controller="ProfileCtrl" id="Profile" ng-cloak>
 <div class="content">
 	<div class="profile-card">
 		<img ng-src="{{ $storage.user.profilePicture || '/img/Gakuseisean-Ivista-2-Misc-User.jpg' }}" class="profile-image">
@@ -69,7 +69,7 @@
 	    <span class="badge badge-balanced">{{commentCount || 0}}
 	    </span>
 	  </a>
-	<div class="item item-divider">
+	<!-- div class="item item-divider">
 		 Social 
 		</div>
 
@@ -90,7 +90,7 @@
 		 <div class="handle"></div>
 	       </div>
 	     </label>
-	  </li>
+	  </li -->
 
 	</div>
    </div>

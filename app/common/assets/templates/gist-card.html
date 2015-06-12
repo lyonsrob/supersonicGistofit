@@ -28,7 +28,7 @@
           		</div>
 
 			  <div class="item" style="border:none;" >
-				<img class="full-image" ng-src="{{ gist.extract.images[0].url }}" ng-open-themeable-browser url="{{gist.url.key.raw.name}}" />
+				<img class="full-image" ng-src="{{ gist.extract.images[0].url }}" index="{{$index}}" open-themeable-browser feed="gist" url="{{gist.url.key.raw.name}}" />
 			    <h2>
 			      {{gist.extract.title}}
 			    </h2>
