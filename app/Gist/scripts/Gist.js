@@ -1,5 +1,12 @@
 'use strict'
 
+angular.module('gistOfItApp').directive('gistCard', function() {
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/gist-card.html'
+  };
+});
+
 angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
     steroids.view.setBackgroundImage({

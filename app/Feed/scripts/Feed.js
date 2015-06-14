@@ -90,6 +90,25 @@ angular.module('gistOfItApp').controller('FeedCtrl', ['$scope', 'GistofitService
    }
 
    $scope.loadAllFeeds();
+   
+   $scope.showGistPrompt = function(feed, index) {
+	$scope.selectedFeed = index;
+ 
+        var message = {
+            recipient: "gistModalView",
+            feed: feed
+        }
+       
+        window.postMessage(message);
+        
+	var createGistView = new supersonic.ui.View({
+            location: "Gist#add",
+            id: "addGist"
+	});
+
+        var fastSlide = new steroids.Animation({  transition: "slideFromBottom",  duration: .2});
+        supersonic.ui.layers.push(createGistView, { animation: fastSlide }); 
+   }
  
     $scope.onReload = function() {
 	var deferred = $q.defer();

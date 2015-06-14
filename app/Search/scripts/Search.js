@@ -6,6 +6,13 @@ function toArrayObj(array) {
  return array;
 }
 
+angular.module('gistOfItApp').directive('searchCard', function() {
+  return {
+    restrict: 'E',
+    templateUrl: '/templates/search-card.html'
+  };
+});
+
 angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitService', '$timeout', 
   function ($scope, Gistofit, $timeout) {
     steroids.view.setBackgroundImage({

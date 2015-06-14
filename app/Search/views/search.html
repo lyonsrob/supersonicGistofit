@@ -13,24 +13,14 @@
       </label>
 
       <ul>
-	<super-navigate ng-model="results" ng-repeat="result in results" view-id="viewGist" ng-attr-data-params-url="{{result.url}}">
-	<li>
-	    <div class="list card">
-	      <a class="item item-thumbnail-left" style="min-height: initial">
-		      <img ng-src="{{ result.extract.images[0].url }}" />
-		      <img style="vertical-align: middle;" src="{{ result.extract.favicon_url }}" width="16px" height="16px" /><h4 style="display:inline; vertical-align:middle;"> via {{result.extract.provider_name}} · 
-				<span class="balanced"><strong><ng-pluralize count="result.gist_count"
-					 when="{'0': 'No Gists',
-					     '1': '1 Gist',
-					     'other': '{{result.gist_count}} Gists'}">
-				</ng-pluralize></strong></span>
-			</h4>	
-		      <h2>{{result.extract.title}}</h2>
-		      <p>{{result.extract.description}}</p>
-	      </a>
-	   </div>
+	<li ng-model="results" ng-repeat="result in results">
+		<a open-themeable-browser index="{{$index}}" url="{{result.url}}" feed="result" ng-if="!result.gist_count">
+			    <search-card></search-card>
+		</a>
+		<super-navigate view-id="viewGist" ng-attr-data-params-url="{{result.url}}" ng-if="result.gist_count">
+			    <search-card></search-card>
+		</super-navigate>
 	</li>
-	</super-navigate>
       </ul>
     </div>
     </div>
