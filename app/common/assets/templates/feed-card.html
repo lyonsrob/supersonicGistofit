@@ -1,5 +1,5 @@
         <div class="list card">
-	 <div ng-click="openURL(feed, $index)">
+	 <div index="{{$index}}" open-themeable-browser feed="feed" url="{{feed.extract.url}}" >
 		  <div class="item item-avatar item-text-wrap">
 		    <img ng-src="{{ feed.extract.favicon_url }}">
 		    <h3>

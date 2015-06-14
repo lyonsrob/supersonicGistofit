@@ -2,6 +2,7 @@ angular.module("gistOfItApp").directive('openThemeableBrowser', function() {
   return {
     scope: {
     	feed: '=',
+    	url: '@',
     	index: '@'
     },
     link: function(scope, element, attrs)
@@ -10,10 +11,6 @@ angular.module("gistOfItApp").directive('openThemeableBrowser', function() {
       console.log(element);
       console.log(attrs);
  
-     var url = attrs.url; 
-     var feed = scope.feed;
-     var index = scope.index; 
-
     scope.showGistPrompt = function(feed, index) {
 	scope.selectedFeed = index;
  
@@ -35,9 +32,9 @@ angular.module("gistOfItApp").directive('openThemeableBrowser', function() {
    }
 
      scope.openUrl = function() {
-	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", url, 1);
-        //var ref = window.open(url, '_blank', 'location=yes');
-	scope.themeable = cordova.ThemeableBrowser.open(url, '_blank', {
+	gaPlugin.trackEvent( nativePluginResultHandler, nativePluginErrorHandler, "Article", "View", scope.url, 1);
+        //var ref = window.open(scope.url, '_blank', 'location=yes');
+	scope.themeable = cordova.ThemeableBrowser.open(scope.url, '_blank', {
 	    statusbar: {
 		color: '#ffffffff'
 	    },
@@ -101,7 +98,7 @@ angular.module("gistOfItApp").directive('openThemeableBrowser', function() {
 //	    alert('hello pressed');
 	}).addEventListener('sharePressed', function(e) {
 	    scope.themeable.close();
-	    scope.showGistPrompt(feed, index);
+	    scope.showGistPrompt(scope.feed, scope.index);
 	});
     }
 
