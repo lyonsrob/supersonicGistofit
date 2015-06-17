@@ -85,17 +85,14 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 			});
       	};
       
-     $scope.emailSignUp = function() 
-	{
-		return Gistofit.createUser({first_name: $scope.first_name, last_name: $scope.last_name, email: $scope.email, password: $scope.password}).then(function(e) 		 	{
-				$scope.$storage.user = e.data;
-				
-				return $scope.$apply(function() {
-						supersonic.ui.initialView.dismiss()
-						return $scope.loginStatus = true;
-				});
-		  });
-      	};
+      $scope.emailSignUp = function() 
+      {
+	      return Gistofit.createUser({first_name: $scope.first_name, last_name: $scope.last_name, email: $scope.email, password: $scope.password}).then(function(e) 		 	{
+			      $scope.$storage.user = e.data;
+			      supersonic.ui.initialView.dismiss()
+			      return $scope.loginStatus = true;
+		});
+      };
       
       $scope.facebookLogout = function() {
         return steroids.addons.facebook.logout().then(function() {
