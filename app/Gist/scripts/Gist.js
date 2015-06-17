@@ -86,7 +86,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
      function postFb(gist) {
 	steroids.addons.facebook.api('/me/feed', {
 		method: 'post',
-		message: "#GistOfIt: " + gist.content,
+		message: gist.content,
 		link: "http://gistof.it/gist/" + gist.id,
 		access_token: $scope.$storage.accessToken,
 		permissions: ["publish_actions"]
