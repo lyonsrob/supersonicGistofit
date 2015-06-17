@@ -2,7 +2,7 @@
 
 angular.module('gistOfItApp').controller('LikesCtrl', ['$scope', '$localStorage', 'GistofitService', 
   function ($scope, $localStorage, Gistofit) {
-    steroids.view.navigationBar.show("Likes");
+    steroids.view.navigationBar.show("Gistivity");
     $scope.$storage = $localStorage;
 
     $scope.gists = {};

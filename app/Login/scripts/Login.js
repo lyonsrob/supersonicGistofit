@@ -65,7 +65,7 @@ angular.module('gistOfItApp').controller('LoginCtrl', ['$scope', '$localStorage'
 
       $scope.facebookLogin = function() 
 	{
-        	return steroids.addons.facebook.login(['public_profile', 'email', 'user_likes', 'user_location', 'user_interests', 'user_education_history']).then(function() 	   
+        	return steroids.addons.facebook.login(['public_profile', 'email']).then(function() 	   
 			{
 				return steroids.addons.facebook.api('/me', {fields: 'email, first_name, last_name, picture.type(normal), likes' }).then(function(user) 
 					{
