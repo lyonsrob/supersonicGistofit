@@ -18,7 +18,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 		Gistofit.getLikes(gist.id).then(function(response) {
 			gist.likes = response.data.map;
 			gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-			//$timeout(refreshLikeCount, 1000);
+			$timeout(refreshLikeCount, 30000);
 		});
 	})();
   }
@@ -27,7 +27,7 @@ angular.module('gistOfItApp').controller('CurrentCtrl', ['$scope', 'supersonic',
 	(function refreshCommentCount() {
 		Gistofit.getComments(gist.id).then(function(response) {
 			gist.comments = response.data.comments;
-			//$timeout(refreshCommentCount, 1000);
+			$timeout(refreshCommentCount, 30000);
 		});
 	})();
   }

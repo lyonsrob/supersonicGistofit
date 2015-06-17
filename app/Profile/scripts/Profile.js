@@ -22,21 +22,14 @@ angular.module('gistOfItApp').controller('ProfileCtrl', ['$scope', '$localStorag
 	    (function refreshGistCount() {
 		Gistofit.getUserGistCount($scope.$storage.user.id).then(function(response) {
 			$scope.gistCount = response.data;
-			$timeout(refreshGistCount, 1000);
-		});
-	    })();
-	    
-	    (function refreshLikeCount() {
-		Gistofit.getUserGistLikesCount($scope.$storage.user.id).then(function(response) {
-			$scope.likeCount = response.data;
-			$timeout(refreshLikeCount, 1000);
+			$timeout(refreshGistCount, 30000);
 		});
 	    })();
 	    
 	    (function refreshCommentCount() {
 		Gistofit.getUserComments($scope.$storage.user.id).then(function(response) {
 			$scope.commentCount = response.data.length;
-			$timeout(refreshCommentCount, 1000);
+			$timeout(refreshCommentCount, 30000);
 		});
 	    })();
     }

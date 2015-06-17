@@ -29,7 +29,7 @@ angular.module('gistOfItApp').controller('SearchCtrl', ['$scope', 'GistofitServi
 				(function refreshGistCountForURL() {
 					Gistofit.getGistsCountForURL(result.url).then(function(response) {
 						result.gist_count = response.data;
-						//$timeout(refreshGistCountForURL, 1000);
+						$timeout(refreshGistCountForURL, 30000);
 					});
 				})();
 			});

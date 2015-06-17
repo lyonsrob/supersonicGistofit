@@ -103,7 +103,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 		Gistofit.getLikes(gist.id).then(function(response) {
 			gist.likes = response.data.map;
 			gist.userLiked = gist.likes[$scope.$storage.user.id] ? 1 : 0;
-			//$timeout(refreshLikeCount, 1000);
+			$timeout(refreshLikeCount, 30000);
 		});
 	})();
   }
@@ -112,7 +112,7 @@ angular.module('gistOfItApp').controller('GistCtrl', ['$scope', '$localStorage',
 	(function refreshCommentCount() {
 		Gistofit.getComments(gist.id).then(function(response) {
 			gist.comments = response.data;
-			//$timeout(refreshCommentCount, 1000);
+			$timeout(refreshCommentCount, 30000);
 		});
 	})();
   }
