@@ -1,5 +1,5 @@
 <div ng-controller="FeedCtrl" id="Feed" ng-cloak>
- <div id="content" class="content overflow-scroll scroll-content">
+ <div id="content" class="content overflow-scroll scroll">
   <ul id="feed-list" pull-to-refresh="onReload()">
     <li ng-model="feeds" ng-repeat="feed in feeds| orderObjectBy:'publishedDate':true" class="list-group-item">
 	<feed-card></feed-card>
